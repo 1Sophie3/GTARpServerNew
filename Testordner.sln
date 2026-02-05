@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server-packages", "server-packages", "{26288CC8-FE56-7A6F-DCC4-8163C259C2CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rp-core", "server-packages\rp-core\rp-core.csproj", "{4860C4FD-68C8-6F56-67A4-F3A76F76D8A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4860C4FD-68C8-6F56-67A4-F3A76F76D8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4860C4FD-68C8-6F56-67A4-F3A76F76D8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4860C4FD-68C8-6F56-67A4-F3A76F76D8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4860C4FD-68C8-6F56-67A4-F3A76F76D8A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4860C4FD-68C8-6F56-67A4-F3A76F76D8A0} = {26288CC8-FE56-7A6F-DCC4-8163C259C2CD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F274937-7B0F-48D5-BE22-FFA548966165}
+	EndGlobalSection
+EndGlobal

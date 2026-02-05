@@ -1,0 +1,26 @@
+# Kopiere diese Datei zu database.json und passe die Werte an
+{
+  "database": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "dein_username",
+    "password": "dein_passwort",
+    "database": "ragemp_rp",
+    "charset": "utf8mb4"
+  },
+  "server": {
+    "debug_mode": true,
+    "auto_save_interval": 300000,
+    "spawn_position": {
+      "x": -1037.7,
+      "y": -2738.5,
+      "z": 13.8
+    }
+  },
+  "gameplay": {
+    "starting_money": 5000,
+    "starting_bank": 0,
+    "max_level": 100,
+    "experience_per_level": 1000
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RP Server - HUD</title>
+    <link rel="stylesheet" href="./src/assets/css/hud.css">
+</head>
+<body>
+    <div id="app"></div>
+    <script type="module" src="/src/hud.js"></script>
+    
+    <!-- RAGE:MP Bridge -->
+    <script>
+        // Globale Update Funktionen für Client
+        function updatePlayerData(data) {
+            window.dispatchEvent(new CustomEvent('updatePlayerData', { detail: data }));
+        }
+        
+        function updateHUD(data) {
+            window.dispatchEvent(new CustomEvent('updateHUD', { detail: data }));
+        }
+        
+        function togglePlayerMenu() {
+            window.dispatchEvent(new CustomEvent('togglePlayerMenu'));
+        }
+        
+        function toggleInventory() {
+            window.dispatchEvent(new CustomEvent('toggleInventory'));
+        }
+    </script>
+</body>
+</html>

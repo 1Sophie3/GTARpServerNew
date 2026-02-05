@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RP Server - Login</title>
+    <link rel="stylesheet" href="./src/assets/css/login.css">
+</head>
+<body>
+    <div id="app"></div>
+    <script type="module" src="/src/login.js"></script>
+    
+    <!-- RAGE:MP Bridge -->
+    <script>
+        // CEF -> Client Communication
+        function sendToClient(event, ...args) {
+            if (typeof mp !== 'undefined') {
+                mp.trigger(event, ...args);
+            } else {
+                console.log('[DEV MODE]', event, args);
+            }
+        }
+    </script>
+</body>
+</html>

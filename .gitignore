@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+*.dll
+*.exe
+*.pdb
+bin/
+obj/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Config (mit sensiblen Daten)
+configs/database.json
+configs/conf.json
+
+# CEF Development
+cef/rp-ui/node_modules/
+cef/rp-ui/dist/
+
+# RAGE:MP Server Files (werden auf dem Server benötigt)
+server-files/
+runtime/
+
+# Temporary
+temp/
+tmp/
+
+# Database dumps
+*.sql.gz
+database/backups/
