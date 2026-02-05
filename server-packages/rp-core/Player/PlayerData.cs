@@ -24,7 +24,7 @@ namespace RPCore.Player
             Level = 1;
             Experience = 0;
             Job = "Arbeitslos";
-            LastPosition = new Vector3(-1037.7, -2738.5, 13.8); // LSIA
+            LastPosition = new Vector3(-1037.7f, -2738.5f, 13.8f); // LSIA
             CreatedAt = DateTime.Now;
             LastLogin = DateTime.Now;
         }

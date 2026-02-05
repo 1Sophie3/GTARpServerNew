@@ -14,12 +14,9 @@
     <PackageReference Include="MySql.Data" Version="8.0.33" />
   </ItemGroup>
 
-  <!-- RAGE:MP Server API wird auf dem Server zur Verfügung gestellt -->
+  <!-- RAGE:MP Server API Stub für Entwicklung -->
   <ItemGroup>
-    <Reference Include="RageMp.Net">
-      <HintPath>..\..\lib\RageMp.Net.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="..\..\lib\GTANetworkAPI.Stub\GTANetworkAPI.Stub.csproj" />
   </ItemGroup>
 
 </Project>

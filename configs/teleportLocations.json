@@ -1,0 +1,82 @@
+[
+    {
+        "Name": "Beach",
+        "X": -1372.4,
+        "Y": -1485.5,
+        "Z": 4.3,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "MountChiliad",
+        "X": 425.4,
+        "Y": 5614.3,
+        "Z": 766.5,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "Pillbox",
+        "X": 276.828,
+        "Y": -580.471,
+        "Z": 43.113,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "MP",
+        "X": 1070.206,
+        "Y": -711.958,
+        "Z": 58.483,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "MBT",
+        "X": -75.015,
+        "Y": -818.215,
+        "Z": 326.176,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 3
+    },
+    {
+        "Name": "DPP",
+        "X": -1850.127,
+        "Y": -1231.751,
+        "Z": 13.017,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "Casino",
+        "X": 925.329,
+        "Y": 46.152,
+        "Z": 80.908,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "GOR",
+        "X": -438.804,
+        "Y": 1076.097,
+        "Z": 352.411,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "PBP",
+        "X": -275.522,
+        "Y": 6635.835,
+        "Z": 7.425,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    },
+    {
+        "Name": "Spawn",
+        "X": -1019.0,
+        "Y": -2692.058,
+        "Z": 13.990,
+        "Rotation": 0.0,
+        "RequiredPermissionLevel": 0
+    }
+]
