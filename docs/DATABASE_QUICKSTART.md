@@ -42,16 +42,15 @@ Der DatabaseManager wird automatisch in `Main.cs` initialisiert:
 using RPCore.Managers;
 using System.Threading.Tasks;
 
-public async Task RegisterPlayer(string username, string email, string password)
+public async Task RegisterPlayer(string username, string password)
 {
     // Password hashen (z.B. mit BCrypt)
     string hashedPassword = HashPassword(password);
     
-    // Account erstellen
+    // Account erstellen (E-Mail wird nicht mehr bei Registrierung benötigt)
     var account = await AccountManager.Instance.CreateAccount(
         username: username,
         passwordHash: hashedPassword,
-        email: email,
         socialClubName: player.SocialClubName,
         hardwareId: player.Serial
     );

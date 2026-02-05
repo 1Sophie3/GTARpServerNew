@@ -1,129 +1,252 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <div class="logo">
-        <h1>RAGE:MP Roleplay</h1>
-        <p>Willkommen zurück</p>
-      </div>
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+        
+        <!-- LOGIN FORM -->
+        <form v-if="!showRegister" class="login100-form validate-form" @submit.prevent="handleLogin">
+          <div class="text-center w-full">
+            <h3 class="login100-form-title">Bitte Logge dich ein!</h3>
+            <br/>
+          </div>
+          
+          <div class="alert" :class="alertClass" id="warning">
+            {{ alertMessage }}
+          </div>
 
-      <div v-if="!showRegister" class="form-container">
-        <h2>Anmelden</h2>
-        <form @submit.prevent="handleLogin">
-          <div class="input-group">
+          <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte Benutzername eingeben!">
             <input 
-              v-model="loginData.username" 
+              class="input100" 
               type="text" 
-              placeholder="Benutzername" 
+              v-model="loginData.username"
+              placeholder="Benutzername"
               required
             />
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <span class="lnr lnr-user"></span>
+            </span>
           </div>
-          <div class="input-group">
-            <input 
-              v-model="loginData.password" 
-              type="password" 
-              placeholder="Passwort" 
-              required
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">Einloggen</button>
-        </form>
-        <p class="switch-text">
-          Noch kein Account? 
-          <a @click="showRegister = true">Registrieren</a>
-        </p>
-      </div>
 
-      <div v-else class="form-container">
-        <h2>Registrieren</h2>
-        <form @submit.prevent="handleRegister">
-          <div class="input-group">
+          <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte ein Passwort eingeben!">
             <input 
-              v-model="registerData.username" 
-              type="text" 
-              placeholder="Benutzername" 
-              required
-            />
-          </div>
-          <div class="input-group">
-            <input 
-              v-model="registerData.email" 
-              type="email" 
-              placeholder="E-Mail" 
-              required
-            />
-          </div>
-          <div class="input-group">
-            <input 
-              v-model="registerData.password" 
+              class="input100" 
               type="password" 
-              placeholder="Passwort" 
+              v-model="loginData.password"
+              placeholder="Passwort"
               required
             />
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <span class="lnr lnr-lock"></span>
+            </span>
           </div>
-          <div class="input-group">
-            <input 
-              v-model="registerData.confirmPassword" 
-              type="password" 
-              placeholder="Passwort bestätigen" 
-              required
-            />
+
+          <div class="container-login100-form-btn p-t-25">
+            <button type="submit" class="login100-form-btn">
+              Login
+            </button>
           </div>
-          <button type="submit" class="btn btn-primary">Registrieren</button>
+
+          <div class="text-center w-full p-t-15">
+            <a class="txt1 bo1 hov1" @click="showRegister = true">
+              Neuen Account erstellen!
+            </a>
+            <br/><hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;"/>
+            <a class="txt1 bo1 hov1" href="https://nemesus.de" target="_blank">
+              Server Website
+            </a>
+          </div>
         </form>
-        <p class="switch-text">
-          Bereits registriert? 
-          <a @click="showRegister = false">Anmelden</a>
-        </p>
+
+        <!-- REGISTER FORM -->
+        <form v-else class="login100-form validate-form" @submit.prevent="handleRegister">
+          <div class="text-center w-full">
+            <h3 class="login100-form-title">Neuen Account erstellen</h3>
+            <br/>
+          </div>
+          
+          <div class="alert" :class="alertClass" id="warning">
+            {{ alertMessage }}
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte Benutzername eingeben!">
+            <input 
+              class="input100" 
+              type="text" 
+              v-model="registerData.username"
+              placeholder="Benutzername"
+              required
+            />
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <span class="lnr lnr-user"></span>
+            </span>
+          </div>
+
+          <!-- E-Mail entfernt: E-Mail wird nicht mehr bei Registrierung benötigt -->
+
+          <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte ein Passwort eingeben!">
+            <input 
+              class="input100" 
+              type="password" 
+              v-model="registerData.password"
+              placeholder="Passwort"
+              required
+            />
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <span class="lnr lnr-lock"></span>
+            </span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-16" data-validate="Bitte Passwort wiederholen!">
+            <input 
+              class="input100" 
+              type="password" 
+              v-model="registerData.confirmPassword"
+              placeholder="Passwort wiederholen"
+              required
+            />
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <span class="lnr lnr-lock"></span>
+            </span>
+          </div>
+
+          <!-- Vor- & Nachname werden nicht mehr bei Registrierung benötigt -->
+
+          <div class="container-login100-form-btn p-t-25">
+            <button type="submit" class="login100-form-btn">
+              Registrieren
+            </button>
+          </div>
+
+          <div class="text-center w-full p-t-15">
+            <a class="txt1 bo1 hov1" @click="showRegister = false">
+              Zum Login
+            </a>
+            <br/><hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;"/>
+            <a class="txt1 bo1 hov1" href="https://nemesus.de" target="_blank">
+              Server Website
+            </a>
+          </div>
+        </form>
+
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import '../assets/css/nemesus-login.css'
 
 const showRegister = ref(false)
+const alertType = ref('info') // 'info', 'danger', 'success'
+const alertMessage = ref('Willkommen auf dem Server!')
+
 const loginData = ref({
   username: '',
   password: ''
 })
+
 const registerData = ref({
   username: '',
-  email: '',
   password: '',
   confirmPassword: ''
 })
 
+const alertClass = computed(() => {
+  return {
+    'alert-info': alertType.value === 'info',
+    'alert-danger': alertType.value === 'danger',
+    'alert-success': alertType.value === 'success'
+  }
+})
+
+const setWarning = (text, type = 'danger') => {
+  alertMessage.value = text
+  alertType.value = type
+}
+
 const handleLogin = () => {
   if (!loginData.value.username || !loginData.value.password) {
-    alert('Bitte alle Felder ausfüllen!')
+    setWarning('Bitte alle Felder ausfüllen!')
+    return
+  }
+  
+  if (loginData.value.password.length < 5) {
+    setWarning('Das Passwort muss mind. 5 Zeichen lang sein!')
     return
   }
   
   // An Client senden (wird dann an Server weitergeleitet)
-  window.sendToClient('cef:login', loginData.value.username, loginData.value.password)
+  if (window.sendToClient) {
+    window.sendToClient('cef:login', loginData.value.username, loginData.value.password)
+  }
+  
+  // Für RageMP mp.trigger
+  if (typeof mp !== 'undefined') {
+    mp.trigger('Auth.Login', loginData.value.username, loginData.value.password)
+  }
+
+  setWarning('Anmeldung wird verarbeitet...', 'info')
 }
 
 const handleRegister = () => {
+  // Validierung
+  if (!registerData.value.username || 
+      !registerData.value.password || !registerData.value.confirmPassword) {
+    setWarning('Bitte alle Felder ausfüllen!')
+    return
+  }
+  
+  if (registerData.value.password.length < 5) {
+    setWarning('Das Passwort muss mind. 5 Zeichen lang sein!')
+    return
+  }
+  
   if (registerData.value.password !== registerData.value.confirmPassword) {
-    alert('Passwörter stimmen nicht überein!')
+    setWarning('Die Passwörter stimmen nicht überein!')
     return
   }
-  
-  if (!registerData.value.username || !registerData.value.email || !registerData.value.password) {
-    alert('Bitte alle Felder ausfüllen!')
-    return
-  }
-  
+
+  // Vor- und Nachname werden serverseitig gesetzt; kein Client-Check nötig
+
   // An Client senden
-  window.sendToClient('cef:register', 
-    registerData.value.username, 
-    registerData.value.email, 
-    registerData.value.password
-  )
+  if (window.sendToClient) {
+    window.sendToClient('cef:register', 
+      registerData.value.username, 
+      registerData.value.password
+    )
+  }
+  
+  // Für RageMP mp.trigger
+  if (typeof mp !== 'undefined') {
+    mp.trigger('Auth.Register', 
+      registerData.value.username,
+      registerData.value.password
+    )
+  }
+
+  setWarning('Registrierung wird verarbeitet...', 'info')
+}
+
+// Globale Funktionen für CEF Callbacks
+window.SetWarning = (text) => {
+  setWarning(text, 'danger')
+}
+
+window.SetSuccess = (text) => {
+  setWarning(text, 'success')
+}
+
+window.SetInfo = (text) => {
+  setWarning(text, 'info')
 }
 </script>
 
 <style scoped>
-/* Styles werden in separate CSS Datei ausgelagert */
+/* Styles sind in nemesus-login.css */
 </style>

@@ -1,68 +1,74 @@
 -- ============================================
 -- RolePlay Server - Modulares Datenbank Schema
+-- HINWEIS: 1 Charakter pro Account (integriert)
 -- ============================================
 
--- Tabelle für Accounts (Login-Daten)
+-- Tabelle für Accounts (Login-Daten + Charakter - 1 Charakter pro Account)
 CREATE TABLE IF NOT EXISTS `accounts` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
+    
+    -- Account/Login Daten
     `username` VARCHAR(50) NOT NULL UNIQUE,
     `password_hash` VARCHAR(255) NOT NULL,
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `social_club_name` VARCHAR(50) NOT NULL,
     `hardware_id` VARCHAR(255) NOT NULL,
-    `is_banned` BOOLEAN DEFAULT FALSE,
-    `ban_reason` TEXT NULL,
-    `ban_expiry` DATETIME NULL,
-    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `last_login` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_username (`username`),
-    INDEX idx_hardware_id (`hardware_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tabelle für Player Permissions (OOC Rechte)
-CREATE TABLE IF NOT EXISTS `player_permissions` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `account_id` INT NOT NULL,
-    `permission_level` TINYINT DEFAULT 0 COMMENT '0=Spieler, 1=Supporter, 2=Moderator, 3=Admin, 4=HeadAdmin, 5=Projektleitung, 6=Owner',
-    `granted_by` VARCHAR(50) NULL,
-    `granted_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON DELETE CASCADE,
-    UNIQUE KEY unique_account (`account_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tabelle für Characters (IC Charaktere)
-CREATE TABLE IF NOT EXISTS `characters` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `account_id` INT NOT NULL,
+    
+    -- Charakter Daten (1 Charakter pro Account)
     `first_name` VARCHAR(50) NOT NULL,
     `last_name` VARCHAR(50) NOT NULL,
+    
+    -- Finanzen
     `cash` INT DEFAULT 500,
     `bank_balance` INT DEFAULT 5000,
+    
+    -- Level & Erfahrung
     `level` INT DEFAULT 1,
     `experience` INT DEFAULT 0,
     `playtime_minutes` INT DEFAULT 0,
+    
+    -- Job & Fraktion
+    `job` VARCHAR(50) DEFAULT 'Arbeitslos',
+    `faction_id` INT NULL,
+    `faction_rank` INT DEFAULT 0,
+    
+    -- Position
     `last_pos_x` FLOAT DEFAULT -1037.7,
     `last_pos_y` FLOAT DEFAULT -2738.5,
     `last_pos_z` FLOAT DEFAULT 13.8,
-    `last_rot_x` FLOAT DEFAULT 0,
-    `last_rot_y` FLOAT DEFAULT 0,
-    `last_rot_z` FLOAT DEFAULT 0,
+    `last_rotation` FLOAT DEFAULT 0,
     `dimension` INT DEFAULT 0,
-    `appearance` TEXT NULL COMMENT 'JSON für Gesichts-Customization',
+    
+    -- Gesundheit & Status
     `health` INT DEFAULT 100,
     `armor` INT DEFAULT 0,
     `is_alive` BOOLEAN DEFAULT TRUE,
     `is_injured` BOOLEAN DEFAULT FALSE,
-    `faction_id` INT NULL,
-    `faction_rank` INT DEFAULT 0,
-    `job` VARCHAR(50) DEFAULT 'Arbeitslos',
+    
+    -- Aussehen
+    `appearance` TEXT NULL COMMENT 'JSON für Gesichts-Customization',
+    
+    -- Admin & Ban Status
+    `permission_level` TINYINT DEFAULT 0 COMMENT '0=Spieler, 1=Supporter, 2=Moderator, 3=Admin, 4=HeadAdmin, 5=Projektleitung, 6=Owner',
+    `is_banned` BOOLEAN DEFAULT FALSE,
+    `ban_reason` TEXT NULL,
+    `ban_expiry` DATETIME NULL,
+    
+    -- Zeitstempel
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `last_played` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON DELETE CASCADE,
+    `last_login` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
     UNIQUE KEY unique_fullname (`first_name`, `last_name`),
-    INDEX idx_account (`account_id`),
+    INDEX idx_username (`username`),
+    INDEX idx_hardware_id (`hardware_id`),
     INDEX idx_faction (`faction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- VERALTET: player_permissions (jetzt in accounts.permission_level integriert)
+-- CREATE TABLE IF NOT EXISTS `player_permissions` ... 
+
+-- VERALTET: characters (jetzt in accounts integriert - 1 Charakter pro Account)
+-- CREATE TABLE IF NOT EXISTS `characters` ...
 
 -- Tabelle für Fraktionen
 CREATE TABLE IF NOT EXISTS `factions` (
@@ -99,22 +105,22 @@ CREATE TABLE IF NOT EXISTS `faction_ranks` (
     INDEX idx_faction (`faction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabelle für Fraktions-Mitglieder
+-- Tabelle für Fraktions-Mitglieder (jetzt mit account_id statt character_id)
 CREATE TABLE IF NOT EXISTS `faction_members` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `character_id` INT NOT NULL,
+    `account_id` INT NOT NULL,
     `faction_id` INT NOT NULL,
     `rank_id` INT NOT NULL,
     `joined_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `is_on_duty` BOOLEAN DEFAULT FALSE,
     `invited_by` VARCHAR(100) NOT NULL,
     `duty_minutes` INT DEFAULT 0,
-    FOREIGN KEY (`character_id`) REFERENCES `characters`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`account_id`) REFERENCES `accounts`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`faction_id`) REFERENCES `factions`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`rank_id`) REFERENCES `faction_ranks`(`id`) ON DELETE RESTRICT,
-    UNIQUE KEY unique_character (`character_id`),
+    UNIQUE KEY unique_account (`account_id`),
     INDEX idx_faction (`faction_id`),
-    INDEX idx_character (`character_id`)
+    INDEX idx_account (`account_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================

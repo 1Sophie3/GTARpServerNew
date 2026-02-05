@@ -10,8 +10,19 @@ using MySql.Data.MySqlClient;
 namespace RPCore.Managers
 {
     /// <summary>
-    /// Character Manager - Verwaltet Spieler-Charaktere
+    /// [VERALTET/DEPRECATED] Character Manager
+    /// 
+    /// HINWEIS: Mit dem neuen System gibt es nur noch 1 Charakter pro Account.
+    /// Alle Charakter-Daten sind jetzt im Account integriert.
+    /// 
+    /// Bitte nutze stattdessen: AccountManager
+    /// - AccountManager.Instance.LoadAccount(username) - lädt Account inkl. Charakter
+    /// - AccountManager.Instance.SaveAccount(account) - speichert Account inkl. Charakter
+    /// - AccountManager.Instance.GetAccountByPlayer(player) - holt Account für Spieler
+    /// 
+    /// Diese Klasse bleibt für Abwärtskompatibilität erhalten.
     /// </summary>
+    [Obsolete("Nutze AccountManager - 1 Charakter pro Account. Charakter-Daten sind im Account integriert.")]
     public class CharacterManager
     {
         private static CharacterManager? _instance;
@@ -30,12 +41,16 @@ namespace RPCore.Managers
         }
 
         /// <summary>
-        /// Lädt alle Characters eines Accounts aus der Datenbank
+        /// [VERALTET] Lädt alle Characters eines Accounts aus der Datenbank
+        /// HINWEIS: Mit dem neuen System gibt es nur 1 Charakter pro Account,
+        /// der direkt im Account gespeichert ist. Nutze AccountManager.LoadAccount()
         /// </summary>
+        [Obsolete("Nutze AccountManager.LoadAccount() - 1 Charakter pro Account")]
         public async Task<List<Character>> LoadCharactersByAccount(int accountId)
         {
             var characters = new List<Character>();
 
+            // Legacy-Unterstützung für alte Datenbank
             string query = "SELECT * FROM characters WHERE account_id = @accountId";
             var reader = await DatabaseManager.Instance.ExecuteReader(query,
                 DatabaseManager.CreateParameter("@accountId", accountId));
@@ -65,25 +80,19 @@ namespace RPCore.Managers
                     LastPlayed = reader.IsDBNull(reader.GetOrdinal("last_played")) ? DateTime.Now : reader.GetDateTime("last_played")
                 };
 
-                // Duty-Status aus separatem Feld laden falls vorhanden
-                if (reader.FieldCount > reader.GetOrdinal("is_on_duty"))
-                {
-                    // Temporär in IsAlive speichern (kein besseres Feld im Model)
-                    character.IsAlive = reader.GetBoolean("is_on_duty");
-                }
-
                 characters.Add(character);
                 _loadedCharacters[character.Id] = character;
             }
 
             reader.Close();
-            NAPI.Util.ConsoleOutput($"[CharacterManager] {characters.Count} Character(e) für Account {accountId} geladen");
+            NAPI.Util.ConsoleOutput($"[CharacterManager] [LEGACY] {characters.Count} Character(e) für Account {accountId} geladen");
             return characters;
         }
 
         /// <summary>
-        /// Lädt einen einzelnen Character aus der Datenbank
+        /// [VERALTET] Lädt einen einzelnen Character aus der Datenbank
         /// </summary>
+        [Obsolete("Nutze AccountManager.LoadAccount() - 1 Charakter pro Account")]
         public async Task<Character?> LoadCharacter(int characterId)
         {
             // Cache-Check

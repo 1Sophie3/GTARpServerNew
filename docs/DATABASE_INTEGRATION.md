@@ -170,6 +170,36 @@ await AccountManager.Instance.SetPermission(
 );
 ```
 
+## 📦 Inventory System (DB + API)
+
+Tabellen (siehe `database/migrations/001_inventory_schema.sql`):
+- `item_definitions` - Item-Metadaten (`key`, `name`, `stackable`, `max_stack`, `weight`, `meta_schema`)
+- `inventories` - Inventar-Metadaten (`category`, `owner_type`, `owner_id`, `slot_count`, `max_weight`)
+- `inventory_items` - Items in Inventaren (`inventory_id`, `slot_index`, `item_def_id`, `amount`, `meta`)
+
+Server-Seitig gibt es `InventoryManager` mit Methoden:
+- `LoadItemDefinitions()` - lädt Item-Definitions ins Cache
+- `GetInventoryByOwner(category, ownerType, ownerId)` - lädt oder erstellt Inventar
+- `LoadInventory(inventoryId)` - lädt Inventory + Items
+- `SaveInventory(inventory)` - speichert Inventar und Items
+- `AddItemToInventory(inventoryId, itemDefId, amount)` - fügt Items hinzu (Stapel-Logik)
+- `RemoveItemFromInventory(inventoryId, slotIndex, amount)` - entfernt Items aus Slot
+
+Remote-Events (Server ⇄ Client):
+- `server:inventoryOpen(category, ownerType, ownerId)` - öffnet Inventar (Client verlangt Anzeige)
+- `server:inventoryTransfer(fromInvId, fromSlot, toInvId, toSlot, amount)` - transferiert Items zwischen Inventaren
+
+Client-Events / Rückmeldungen:
+- `client:inventoryOpened(inventoryId, slotCount)` - Inventar geöffnet
+- `client:updateInventoryItem(inventoryId, slotIndex, itemDefId, amount, meta)` - sendet einzelnen Item-Slot
+- `client:inventoryRefresh(inventoryId)` - Anforderung zum Neuladen eines Inventars
+- `client:updateInventory(success, message)` - allgemeine Rückmeldung
+
+Hinweise:
+- Berechtigungs-Checks: Spieler dürfen nur auf ihr eigenes `player`-Inventar zugreifen; Staff (`Supporter`+) kann erweiterten Zugriff haben.
+- Transfers versuchen eine Best-Effort-Rollback wenn Ziel kein Platz hat; für echte Atomizität wären DB-Transaktionen nötig.
+
+
 ## ⚠️ Wichtige Hinweise
 
 ### Datenbank Setup:

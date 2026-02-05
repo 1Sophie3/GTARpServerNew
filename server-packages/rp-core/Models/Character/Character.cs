@@ -4,9 +4,15 @@ using GTANetworkAPI;
 namespace RPCore.Models.Character
 {
     /// <summary>
-    /// Character Model - Repräsentiert einen IC (In-Character) Charakter
-    /// Ein Account kann mehrere Charaktere haben
+    /// [VERALTET/DEPRECATED] Character Model
+    /// 
+    /// HINWEIS: Diese Klasse ist nicht mehr in Verwendung!
+    /// Mit dem neuen System gibt es nur noch 1 Charakter pro Account.
+    /// Alle Charakter-Daten sind jetzt im Account-Model integriert.
+    /// 
+    /// Siehe: RPCore.Models.Account.Account
     /// </summary>
+    [Obsolete("Diese Klasse ist veraltet. Nutze stattdessen Account.cs - 1 Charakter pro Account")]
     public class Character
     {
         // Primäre Daten
