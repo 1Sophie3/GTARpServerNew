@@ -1,0 +1,3 @@
+- Auserdem muss die index.cs der Clientpages geändert werden 
+
+- login (serverseiteig) nochmals anschauen 
