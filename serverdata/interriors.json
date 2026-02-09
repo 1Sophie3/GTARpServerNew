@@ -1,0 +1,398 @@
+[
+  {
+    "Name": "Apartment - Low-End",
+    "IPL": "apa_v_mp_h_01_a",
+    "Position": {
+      "X": 346.348,
+      "Y": -1013.049,
+      "Z": -99.196
+    }
+  },
+  {
+    "Name": "Apartment - Mid-Range 1",
+    "IPL": "apa_v_mp_h_01_b",
+    "Position": {
+      "X": -774.0126,
+      "Y": 342.0428,
+      "Z": 196.6864
+    }
+  },
+  {
+    "Name": "Apartment - Mid-Range 2",
+    "IPL": "apa_v_mp_h_02_c",
+    "Position": {
+      "X": -786.8195,
+      "Y": 315.5634,
+      "Z": 187.9137
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Modern 1)",
+    "IPL": "apa_v_mp_h_01_a",
+    "Position": {
+      "X": -786.8663,
+      "Y": 315.7642,
+      "Z": 217.6385
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Modern 2)",
+    "IPL": "apa_v_mp_h_01_c",
+    "Position": {
+      "X": -786.9563,
+      "Y": 315.6229,
+      "Z": 187.9136
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Modern 3)",
+    "IPL": "apa_v_mp_h_01_b",
+    "Position": {
+      "X": -774.0126,
+      "Y": 342.0428,
+      "Z": 196.6864
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Mody 1)",
+    "IPL": "apa_v_mp_h_02_a",
+    "Position": {
+      "X": -787.0749,
+      "Y": 315.8198,
+      "Z": 217.6386
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Mody 2)",
+    "IPL": "apa_v_mp_h_02_c",
+    "Position": {
+      "X": -786.8195,
+      "Y": 315.5634,
+      "Z": 187.9137
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Mody 3)",
+    "IPL": "apa_v_mp_h_02_b",
+    "Position": {
+      "X": -774.1382,
+      "Y": 342.0316,
+      "Z": 196.6864
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Vibrant 1)",
+    "IPL": "apa_v_mp_h_03_a",
+    "Position": {
+      "X": -786.6245,
+      "Y": 315.6175,
+      "Z": 217.6385
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Vibrant 2)",
+    "IPL": "apa_v_mp_h_03_c",
+    "Position": {
+      "X": -786.9584,
+      "Y": 315.7974,
+      "Z": 187.9135
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Vibrant 3)",
+    "IPL": "apa_v_mp_h_03_b",
+    "Position": {
+      "X": -774.0223,
+      "Y": 342.1718,
+      "Z": 196.6863
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Sharp 1)",
+    "IPL": "apa_v_mp_h_04_a",
+    "Position": {
+      "X": -787.0902,
+      "Y": 315.7039,
+      "Z": 217.6384
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Sharp 2)",
+    "IPL": "apa_v_mp_h_04_c",
+    "Position": {
+      "X": -787.0155,
+      "Y": 315.7071,
+      "Z": 187.9135
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Sharp 3)",
+    "IPL": "apa_v_mp_h_04_b",
+    "Position": {
+      "X": -773.8976,
+      "Y": 342.1525,
+      "Z": 196.6863
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Monochrome 1)",
+    "IPL": "apa_v_mp_h_05_a",
+    "Position": {
+      "X": -786.9887,
+      "Y": 315.7393,
+      "Z": 217.6386
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Monochrome 2)",
+    "IPL": "apa_v_mp_h_05_c",
+    "Position": {
+      "X": -786.8809,
+      "Y": 315.6634,
+      "Z": 187.9136
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Monochrome 3)",
+    "IPL": "apa_v_mp_h_05_b",
+    "Position": {
+      "X": -774.0675,
+      "Y": 342.0773,
+      "Z": 196.6864
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Seductive 1)",
+    "IPL": "apa_v_mp_h_06_a",
+    "Position": {
+      "X": -787.1423,
+      "Y": 315.6943,
+      "Z": 217.6384
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Seductive 2)",
+    "IPL": "apa_v_mp_h_06_c",
+    "Position": {
+      "X": -787.0961,
+      "Y": 315.815,
+      "Z": 187.9135
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Seductive 3)",
+    "IPL": "apa_v_mp_h_06_b",
+    "Position": {
+      "X": -773.9552,
+      "Y": 341.9892,
+      "Z": 196.6862
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Regal 1)",
+    "IPL": "apa_v_mp_h_07_a",
+    "Position": {
+      "X": -787.029,
+      "Y": 315.7113,
+      "Z": 217.6385
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Regal 2)",
+    "IPL": "apa_v_mp_h_07_c",
+    "Position": {
+      "X": -787.0574,
+      "Y": 315.6567,
+      "Z": 187.9135
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Regal 3)",
+    "IPL": "apa_v_mp_h_07_b",
+    "Position": {
+      "X": -774.0109,
+      "Y": 342.0965,
+      "Z": 196.6863
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Aqua 1)",
+    "IPL": "apa_v_mp_h_08_a",
+    "Position": {
+      "X": -786.9469,
+      "Y": 315.5655,
+      "Z": 217.6383
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Aqua 2)",
+    "IPL": "apa_v_mp_h_08_c",
+    "Position": {
+      "X": -786.9756,
+      "Y": 315.723,
+      "Z": 187.9134
+    }
+  },
+  {
+    "Name": "Apartment - High-End (Aqua 3)",
+    "IPL": "apa_v_mp_h_08_b",
+    "Position": {
+      "X": -774.0349,
+      "Y": 342.0296,
+      "Z": 196.6862
+    }
+  },
+  {
+    "Name": "Stilthouse",
+    "IPL": "ch_dlc_stilt_int_placement_ch_dlc_stilt_int_01",
+    "Position": {
+      "X": -1161.76,
+      "Y": 857.74,
+      "Z": 13.57
+    }
+  },
+  {
+    "Name": "Motelzimmer",
+    "IPL": "v_motel_mp",
+    "Position": {
+      "X": 151.2,
+      "Y": -1007.4,
+      "Z": -99.0
+    }
+  },
+  {
+    "Name": "MC Clubhouse - Great Chaparral",
+    "IPL": "bkr_biker_interior_placement_interior_0_biker_dlc_int_01_milo",
+    "Position": {
+      "X": 1107.0,
+      "Y": -3157.0,
+      "Z": -37.5
+    }
+  },
+  {
+    "Name": "MC Clubhouse - Del Perro Beach",
+    "IPL": "bkr_biker_interior_placement_interior_1_biker_dlc_int_02_milo",
+    "Position": {
+      "X": 998.0,
+      "Y": -3160.0,
+      "Z": -39.0
+    }
+  },
+  {
+    "Name": "CEO Büro - Maze Bank West",
+    "IPL": "ex_dt1_02_office_02b",
+    "Position": {
+      "X": -1579.5,
+      "Y": -565.0,
+      "Z": 108.5
+    }
+  },
+  {
+    "Name": "CEO Büro - Arcadius Center",
+    "IPL": "ex_sm_13_office_02b",
+    "Position": {
+      "X": -1378.5,
+      "Y": -499.5,
+      "Z": 72.0
+    }
+  },
+  {
+    "Name": "CEO Büro - Lombank West",
+    "IPL": "ex_sm_15_office_02b",
+    "Position": {
+      "X": -1579.5,
+      "Y": -565.0,
+      "Z": 108.5
+    }
+  },
+  {
+    "Name": "CEO Büro - Maze Bank Tower",
+    "IPL": "ex_dt1_11_office_02b",
+    "Position": {
+      "X": -1378.5,
+      "Y": -499.5,
+      "Z": 72.0
+    }
+  },
+  {
+    "Name": "Bunker",
+    "IPL": "gr_case0_bunker_int",
+    "Position": {
+      "X": 852.5,
+      "Y": 2963.0,
+      "Z": -62.0
+    }
+  },
+  {
+    "Name": "Hangar",
+    "IPL": "hangar_dlc_int_placement",
+    "Position": {
+      "X": -1274.0,
+      "Y": -2920.0,
+      "Z": -47.0
+    }
+  },
+  {
+    "Name": "Nachtclub",
+    "IPL": "ba_case0_nightclub_int",
+    "Position": {
+      "X": 250.0,
+      "Y": -2040.0,
+      "Z": -48.0
+    }
+  },
+  {
+    "Name": "Casino Penthouse",
+    "IPL": "vw_casino_penthouse",
+    "Position": {
+      "X": 976.637,
+      "Y": 70.295,
+      "Z": 115.164
+    }
+  },
+  {
+    "Name": "Spielhalle (Arcade)",
+    "IPL": "ch_int_placement_ch_int_arcade_milo_",
+    "Position": {
+      "X": 2720.0,
+      "Y": -370.0,
+      "Z": -55.0
+    }
+  },
+  {
+    "Name": "Agentur-Büro",
+    "IPL": "agency_bus",
+    "Position": {
+      "X": -530.0,
+      "Y": -600.0,
+      "Z": 28.0
+    }
+  },
+  {
+    "Name": "Yacht",
+    "IPL": "hei_yacht_heist_bar",
+    "Position": {
+      "X": -2045.0,
+      "Y": -1031.0,
+      "Z": 12.0
+    }
+  },
+  {
+    "Name": "Avenger (Flugzeug-Hangar)",
+    "IPL": "sm_avenger_interior_placement",
+    "Position": {
+      "X": -1167.0,
+      "Y": -2930.0,
+      "Z": -47.5
+    }
+  },
+  {
+    "Name": "Terrorbyte (Nachtclub-Garage)",
+    "IPL": "ba_terrorbyte_interior",
+    "Position": {
+      "X": 250.0,
+      "Y": -2015.0,
+      "Z": -46.5
+    }
+  }
+]

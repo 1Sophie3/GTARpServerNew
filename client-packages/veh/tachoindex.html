@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="tachostyle.css">
+</head>
+<body>
+    <div id="tacho-container">
+        <svg id="gauge" viewBox="0 0 200 120">
+            <path class="bg-arc" d="M 20 100 A 80 80 0 0 1 180 100"></path>
+            <path class="rpm-arc" id="rpm-arc" d="M 20 100 A 80 80 0 0 1 180 100"></path>
+            <line class="needle" id="needle" x1="100" y1="100" x2="100" y2="30"></line>
+            <circle class="needle-base" cx="100" cy="100" r="5"></circle>
+            <text class="speed-text" id="speed-text" x="100" y="85">0</text>
+            <text class="unit-text" x="100" y="100">KM/H</text>
+            <text class="gear-text" id="gear-text" x="100" y="118">N</text>
+        </svg>
+        <div id="info-bars">
+            <div class="bar-container">
+                <span class="bar-label">FUEL</span>
+                <div class="bar-bg"><div id="fuel-bar" class="bar-fill"></div></div>
+            </div>
+            <div class="bar-container">
+                <span class="bar-label">KM-STAND</span>
+                <span id="mileage-text">0.0</span>
+            </div>
+        </div>
+    </div>
+    <script src="tachoscript.js"></script>
+</body>
+</html>

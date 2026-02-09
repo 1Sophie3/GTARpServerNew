@@ -1,0 +1,17 @@
+{
+	"maxplayers" : 111,
+	"name" : "Sierra District", 
+	"language" : "ger",
+	"gamemode" : "roleplay", 
+	"stream-distance" : 500.0,
+	"announce" : false,
+	"csharp" : "enabled",
+	"port": 22005,
+	"bind": "193.23.127.84",
+	"sync-rate": 30,
+	"api-threading-debugging": false,
+	"max-ping": 80,
+	"max-packet-loss": 25
+
+	
+}

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-primary: rgba(30, 30, 30, 0.95);
+            --bg-secondary: rgba(20, 20, 20, 0.95);
+            --bg-tertiary: rgba(45, 45, 45, 0.95);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --border-color: rgba(0, 255, 255, 0.5);
+            --accent-cyan: #00ffff;
+            --accent-cyan-glow: rgba(0, 255, 255, 0.6);
+            --accent-red: #dc3545;
+            --accent-yellow: #ffc107;
+            --accent-green: #28a745;
+        }
+
+        body, html {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            background: transparent;
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            background-color: var(--bg-primary);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--accent-cyan-glow);
+            width: 950px;
+            height: 700px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            backdrop-filter: blur(5px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .header h2 {
+            color: var(--accent-cyan);
+            margin: 0;
+            text-shadow: 0 0 8px var(--accent-cyan-glow);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .header h2 .fas {
+             margin-right: 10px;
+        }
+
+        .close-button {
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+        .close-button:hover { background-color: var(--accent-red); color: white; box-shadow: 0 0 10px var(--accent-red); }
+
+        .main-body { display: flex; flex-grow: 1; height: calc(100% - 78px); overflow: hidden; }
+
+        .tabs {
+            width: 180px;
+            background: var(--bg-secondary);
+            padding: 10px 0;
+            border-right: 1px solid #444;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+        .tab-button {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: none;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            box-sizing: border-box;
+            border-right: 3px solid transparent;
+        }
+        .tab-button:hover { color: #fff; background-color: rgba(255,255,255,0.05); }
+        .tab-button.active { color: var(--accent-cyan); background-color: rgba(0, 255, 255, 0.1); border-right: 3px solid var(--accent-cyan); font-weight: bold; }
+        .tab-button .fas { margin-right: 8px; width: 20px; text-align: center;}
+        
+        .content-wrapper {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .tab-content { display: none; height: 100%; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease-in-out; height: 100%; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .grid-container { display: grid; grid-template-columns: 280px 1fr; gap: 20px; height: 100%; }
+        .list-panel { background: rgba(0,0,0,0.3); border: 1px solid #444; border-radius: 5px; overflow-y: auto; height: 100%; }
+        .action-panel { height: 100%; overflow-y: auto; padding-right: 10px; }
+        
+        .list-item { padding: 10px 15px; border-bottom: 1px solid #444; cursor: pointer; }
+        .list-item:hover { background-color: #3a3a3a; }
+        .list-item.selected { background: var(--accent-cyan); color: #111; font-weight: 500; }
+        
+        .action-group h3, .action-group h4 { color: var(--accent-cyan); border-bottom: 1px solid #444; padding-bottom: 8px; margin-top: 0; margin-bottom: 20px; }
+        .action-group { margin-bottom: 25px; }
+        .action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .btn, input, textarea { width: 100%; padding: 10px; margin-top: 5px; background: #333; border: 1px solid #555; color: var(--text-primary); border-radius: 4px; box-sizing: border-box; }
+        textarea { resize: vertical; min-height: 80px; }
+        .btn { cursor: pointer; transition: all 0.2s ease; font-weight: 500; }
+        .btn:hover { filter: brightness(1.2); }
+        .btn.blue { background-color: #007bff; }
+        .btn.red { background-color: var(--accent-red); }
+        .btn.yellow { background-color: var(--accent-yellow); color: #333; }
+        .btn.green { background-color: var(--accent-green); }
+        
+        .input-group { display: flex; gap: 10px; align-items: center; }
+        hr { border-color: #444; margin: 20px 0; border-style: solid; border-width: 1px 0 0 0; }
+        
+        .message-display {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            min-height: 60px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 140px;
+            overflow-y: auto;
+            user-select: text;
+        }
+        
+        .custom-select-wrapper { position: relative; width: 100%; }
+        .custom-select-trigger { background: #333; border: 1px solid #555; border-radius: 4px; padding: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .custom-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #333; border: 1px solid #555; border-top: none; z-index: 10; max-height: 150px; overflow-y: auto; }
+        .custom-options.open { display: block; }
+        .custom-option { padding: 10px; cursor: pointer; }
+        .custom-option:hover { background-color: var(--accent-cyan); color: #111; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2a2a2a; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
+            <button class="close-button" onclick="closePanel()">×</button>
+        </div>
+        <div class="main-body">
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab(event, 'players')"><i class="fas fa-users"></i> Spieler</button>
+                <button class="tab-button" data-rank="1" onclick="openTab(event, 'self')"><i class="fas fa-user-cog"></i> Aktionen</button>
+                <button class="tab-button" data-rank="1" onclick="openTab(event, 'support')"><i class="fas fa-life-ring"></i> Support</button>
+                <button class="tab-button" data-rank="4" onclick="openTab(event, 'vehicles')"><i class="fas fa-car"></i> Fahrzeuge</button>
+                <button class="tab-button" data-rank="4" onclick="openTab(event, 'houses')"><i class="fas fa-home"></i> Häuser</button>
+                <button class="tab-button" data-rank="1" onclick="openTab(event, 'communication')"><i class="fas fa-bullhorn"></i> Kommunikation</button>
+            </div>
+            <div class="content-wrapper">
+                <div id="players" class="tab-content active">
+                    <div class="grid-container">
+                        <div id="playerList" class="list-panel"></div>
+                        <div id="playerActions" class="action-panel" style="display: none;">
+                            <h3 id="targetPlayerName">Spieler Aktionen</h3>
+                            <div class="action-grid">
+                                <button class="btn blue" data-rank="1" onclick="handleAction('goto')">GoTo</button>
+                                <button class="btn blue self-target-hide" data-rank="2" onclick="handleAction('gethere')">GetHere</button>
+                                <button class="btn green" data-rank="1" onclick="handleAction('heal')">Heilen</button>
+                                <button class="btn green" data-rank="1" onclick="handleAction('revive')">Wiederbeleben</button>
+                                <button class="btn yellow self-target-hide" data-rank="1" onclick="handleAction('toggleFreeze')">Freeze</button>
+                                <button class="btn blue self-target-hide" data-rank="2" onclick="handleAction('toggleSpectate')">Spectate</button>
+                                <button class="btn yellow self-target-hide" data-rank="2" onclick="handleAction('kick')">Kicken</button>
+                                <button class="btn red self-target-hide" data-rank="2" onclick="handleAction('ban')">Bannen</button>
+                                <button class="btn red self-target-hide" data-rank="4" onclick="handleAction('unban')">Entbannen</button>
+                            </div>
+                            <div id="selfActionsForTarget" style="display: none; margin-top: 20px;">
+                                 <h4>Admin-Status</h4>
+                                 <div class="action-grid">
+                                    <button class="btn green" data-rank="1" onclick="handleAction('toggleAduty')">Aduty An/Aus</button>
+                                    <button class="btn blue" data-rank="1" onclick="handleAction('toggleInvisibility')">Unsichtbar An/Aus</button>
+                                 </div>
+                            </div>
+                            <div data-rank="4" style="margin-top: 20px;">
+                                <h4>Attribute & Geschenke</h4>
+                                <div class="input-group"><input type="number" id="dimensionInput" placeholder="Dimension"><button class="btn blue" onclick="handleAction('setPlayerDimension')">Dim setzen</button></div>
+                                <div class="input-group" style="margin-top: 10px;"><input type="number" id="moneyAmount" placeholder="Betrag"><div class="custom-select-wrapper" id="moneyTypeWrapper" data-value="cash"><div class="custom-select-trigger" onclick="toggleDropdown('moneyOptions')"><span id="moneySelectedOption">Bargeld</span> &#9662;</div><div class="custom-options" id="moneyOptions"><div class="custom-option" onclick="selectOption('money', 'cash', 'Bargeld')">Bargeld</div><div class="custom-option" onclick="selectOption('money', 'bank', 'Bank')">Bank</div></div></div></div>
+                                <button class="btn blue" onclick="handleAction('giveMoney')">Geld geben</button>
+                                <input type="text" id="weaponName" placeholder="Waffen-Name (z.B. weapon_pistol)">
+                                <button class="btn blue" onclick="handleAction('giveWeapon')">Waffe geben</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="self" class="tab-content">
+                    <div class="action-group">
+                        <h3>Teleport</h3>
+                        <div class="custom-select-wrapper" id="tpLocationWrapper" data-value="">
+                            <div class="custom-select-trigger" id="tpLocationTrigger">
+                                <span id="tpSelectedOption">Ort auswählen...</span> &#9662;
+                            </div>
+                            <div class="custom-options" id="tpLocationOptions"></div>
+                        </div>
+                        <div class="action-grid" style="margin-top:10px;">
+                            <button class="btn blue" data-rank="1" onclick="handleAction('teleportToLocation', false)">Teleportieren</button>
+                            <button class="btn blue" data-rank="2" onclick="handleAction('teleportToLocation', true)">Mit Fahrzeug</button>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <h3>Allgemein</h3>
+                        <div class="action-grid">
+                            <button class="btn blue" data-rank="1" onclick="handleAction('spawnAdminVehicle')">Admin Fahrzeug</button>
+                            <button class="btn blue" data-rank="1" onclick="handleAction('goBack')">Zurück porten</button>
+                            <button class="btn yellow" data-rank="1" onclick="handleAction('toggleGodMode')">Godmode</button>
+                            <button class="btn yellow" data-rank="1" onclick="handleAction('toggleNoClip')">NoClip</button>
+                        </div>
+                    </div>
+                    <div class="action-group">
+                        <h3>Zu Koordinaten teleportieren</h3>
+                        <div class="input-group">
+                            <input type="number" id="coordX" placeholder="X" style="margin-right: 5px;">
+                            <input type="number" id="coordY" placeholder="Y" style="margin-right: 5px;">
+                            <input type="number" id="coordZ" placeholder="Z">
+                        </div>
+                        <button class="btn blue" style="margin-top: 10px;" data-rank="1" onclick="handleAction('teleportToCoords')">Teleportieren</button>
+                    </div>
+                </div>
+                <div id="support" class="tab-content">
+                    <div class="grid-container">
+                        <div id="supportTicketList" class="list-panel"></div>
+                        <div id="supportTicketActions" class="action-panel" style="display: none;">
+                            <h3 id="targetTicketName">Ticket Aktionen</h3>
+                            <div class="action-group">
+                                <h4>Nachricht des Spielers</h4>
+                                <div id="ticketMessageDisplay" class="message-display"></div>
+                            </div>
+                            <hr>
+                            <div class="action-group">
+                                <h4>Ticket-Verwaltung</h4>
+                                <div class="action-grid">
+                                    <button class="btn green" onclick="handleSupportTicketAction('updateStatus', 'Geschlossen')">Als Erledigt markieren</button>
+                                    <button id="priorityToggleButton" class="btn" onclick="handleSupportTicketAction('togglePriority')">Priorität Umschalten</button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="action-group">
+                                <h4>Spieler-Aktionen</h4>
+                                <div class="action-grid">
+                                    <button class="btn blue" data-rank="1" onclick="handleAction('goto')">GoTo Spieler</button>
+                                    <button class="btn green" data-rank="1" onclick="handleAction('heal')">Spieler Heilen</button>
+                                    <button class="btn green" data-rank="1" onclick="handleAction('revive')">Spieler Wiederbeleben</button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="action-group">
+                                <h4>Bisherige Kommentare</h4>
+                                <div id="existingCommentDisplay" class="message-display">Kein Kommentar vorhanden.</div>
+                            </div>
+                            <hr>
+                            <div class="action-group">
+                                <h4>Neuen Kommentar hinzufügen</h4>
+                                <textarea id="newCommentInput" placeholder="Füge eine neue Notiz hinzu..."></textarea>
+                                <button class="btn blue" style="margin-top:10px;" onclick="handleSupportTicketAction('addComment')">Kommentar speichern</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="vehicles" class="tab-content">
+                    <div class="action-group">
+                        <h3>Fahrzeug Erschaffen & Verwalten</h3>
+                        <div class="action-group">
+                            <h4>Temporäres Fahrzeug</h4><input type="text" id="tempVehModelInput" placeholder="Modell"><button class="btn blue" data-rank="3" onclick="handleAction('spawnTempVehicle')">Spawnen</button>
+                        </div>
+                        <hr>
+                        <div class="action-group">
+                            <h4>Persistentes Fahrzeug</h4><input type="text" id="persVehModelInput" placeholder="Modell"><input type="number" id="persVehOwnerInput" placeholder="Besitzer Account-ID"><input type="text" id="persVehPlateInput" placeholder="Kennzeichen"><div class="input-group"><input type="number" id="persVehColor1Input" placeholder="Farbe 1"><input type="number" id="persVehColor2Input" placeholder="Farbe 2"></div><button class="btn green" data-rank="4" onclick="handleAction('createPersVehicle')">Erstellen</button>
+                        </div>
+                        <hr>
+                         <div class="action-group">
+                            <h4>Fraktionsfahrzeug</h4><input type="text" id="factionVehModelInput" placeholder="Modell"><input type="number" id="factionIdInput" placeholder="Fraktions-ID"><input type="text" id="factionPlateInput" placeholder="Nummernschild"><div class="input-group"><input type="number" id="factionVehColor1Input" placeholder="Farbe 1"><input type="number" id="factionVehColor2Input" placeholder="Farbe 2"></div><button class="btn green" data-rank="4" onclick="handleAction('createFactionVehicle')">Erstellen</button>
+                        </div>
+                        <hr>
+                        <div class="action-group">
+    <h4>Aktionen nach DB-ID</h4>
+    <input type="number" id="vehDbIdInput" placeholder="Fahrzeug DB-ID">
+    <div class="action-grid">
+        <button class="btn blue" data-rank="4" onclick="handleAction('tptoVehicle')">TP zu Fzg.</button>
+        <button class="btn yellow" data-rank="4" onclick="handleAction('parkVehicleInAlta')">In Alta Garage parken</button>
+        <button class="btn green" data-rank="4" onclick="handleAction('fetchVehicle')">Fzg. herholen</button>
+        <button class="btn blue" data-rank="4" onclick="handleAction('repairVehicle')">Fzg. reparieren</button>
+        <button class="btn red" data-rank="5" onclick="confirmAndDeleteVehicle()">Fzg. (DB) löschen</button>
+    </div>
+</div>
+                        <div class="action-group">
+                            <h4>Nahes Fahrzeug</h4><div class="action-grid"><button class="btn yellow" data-rank="4" onclick="handleAction('forceToggleLock', true)">Abschließen</button><button class="btn green" data-rank="4" onclick="handleAction('forceToggleLock', false)">Aufschließen</button><button class="btn green" data-rank="4" onclick="handleAction('forceToggleEngine', true)">Motor an</button><button class="btn red" data-rank="4" onclick="handleAction('forceToggleEngine', false)">Motor aus</button></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="houses" class="tab-content">
+                    <div class="grid-container">
+                        <div id="houseList" class="list-panel"></div>
+                        <div id="houseActions" class="action-panel" style="display: none;">
+                            <h3 id="targetHouseName">Haus Aktionen</h3>
+                             <div class="action-group">
+                                <h4>Aktionen</h4>
+                                <div class="action-grid">
+                                    <button class="btn blue" data-rank="4" onclick="handleAction('teleportToHouse')">Teleportieren</button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="action-group">
+                                <h4>Besitzer ändern</h4>
+                                <input type="number" id="houseOwnerInput" placeholder="Neue Besitzer Account-ID (0 = Staat)">
+                                <button class="btn green" style="margin-top:10px;" data-rank="4" onclick="handleAction('setHouseOwner')">Besitzer setzen</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="communication" class="tab-content">
+                    <div class="action-group">
+                        <h3>Admin-Chat</h3>
+                        <textarea id="adminChatMessage" placeholder="Nachricht an alle Admins..." rows="5"></textarea>
+                        <button class="btn blue" data-rank="1" onclick="handleAction('sendAdminChat')">Senden</button>
+                    </div>
+                     <div class="action-group">
+                        <h3>Server-Ankündigung</h3>
+                        <textarea id="announcementMessage" placeholder="Ankündigung an alle Spieler..." rows="5"></textarea>
+                        <button class="btn yellow" data-rank="2" onclick="handleAction('sendAnnouncement')">Ankündigung senden</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let adminLevel=0,ownAccountId=0,selectedPlayerId=null,selectedHouseId=null;
+        let selectedTicketId=null,allTickets=[];
+        
+        function closePanel(){mp.trigger("adminPanel:client:close")}
+        
+        function openTab(e,l){document.querySelectorAll(".tab-content").forEach(e=>e.style.display="none"),document.querySelectorAll(".tab-button").forEach(e=>e.classList.remove("active"));const o=document.getElementById(l);o.style.display="players"===o.id||"houses"===o.id||"support"===o.id?"grid":"block",e.currentTarget.classList.add("active")}
+        
+        function safeJsonParse(e){if("string"!=typeof e)return e;try{return JSON.parse(e)}catch(e){return null}}
+        
+        function initializePanel(e,l,o,n,t,s){adminLevel=e,ownAccountId=l,document.querySelectorAll("[data-rank]").forEach(e=>{e.style.display=adminLevel<parseInt(e.dataset.rank,10)?"none":""});const i=safeJsonParse(o);i&&renderList("playerList",i,selectPlayer);const a=safeJsonParse(n);a&&renderList("houseList",a,selectHouse,e=>`${e.name} [${e.id}] (${e.owner})`);const d=safeJsonParse(t),c=document.getElementById("tpLocationOptions");if(c&&d){c.innerHTML="";d.forEach(e=>{const l=document.createElement("div");l.className="custom-option",l.innerText=e,l.onclick=()=>selectOption("tp",e,e),c.appendChild(l)}),d.length>0&&selectOption("tp",d[0],d[0])}const r=safeJsonParse(s);if(r){allTickets=r,renderList("supportTicketList",r,selectSupportTicket,e=>{const l=e.IsPriority?"❗️ ":"",o=(e.Message||"").split("\n\n")[1]||e.Message||"";return`${l}${e.ReporterName}: ${o.substring(0,25)}...`})}const u=document.getElementById("tpLocationTrigger");u&&u.addEventListener("click",()=>{document.getElementById("tpLocationOptions").classList.toggle("open")})}
+        
+        function selectOption(e,l,o){"money"===e?(document.getElementById("moneySelectedOption").innerText=o,document.getElementById("moneyTypeWrapper").dataset.value=l,document.getElementById("moneyOptions").classList.remove("open")):"tp"===e&&(document.getElementById("tpSelectedOption").innerText=o,document.getElementById("tpLocationWrapper").dataset.value=l,document.getElementById("tpLocationOptions").classList.remove("open"))}
+        
+        window.addEventListener("click",function(e){e.target.closest(".custom-select-wrapper")||document.querySelectorAll(".custom-options").forEach(e=>e.classList.remove("open"))});
+        
+        function renderList(e,l,o,n=e=>`${e.name} [ID: ${e.id}]`){const t=document.getElementById(e);if(!t||!l)return;t.innerHTML="",l.forEach(item=>{const l=document.createElement("div");l.className="list-item",l.innerText=n(item),l.onclick=()=>o(item.Id||item.id,l),t.appendChild(l)})}
+        
+        function selectPlayer(e,l){selectedPlayerId=e,document.getElementById("playerActions").style.display="block",document.getElementById("targetPlayerName").innerText=`Aktionen für ${l.innerText}`,document.querySelectorAll("#playerList .list-item, #houseList .list-item, #supportTicketList .list-item").forEach(e=>e.classList.remove("selected")),l.classList.add("selected");const o=e===ownAccountId;document.querySelectorAll(".self-target-hide").forEach(el=>{el.style.display=o?"none":""}),document.getElementById("selfActionsForTarget").style.display=o?"block":"none"}
+        
+        function selectHouse(e,l){selectedHouseId=e,document.getElementById("houseActions").style.display="block",document.getElementById("targetHouseName").innerText=`Aktionen für ${l.innerText}`,document.querySelectorAll("#playerList .list-item, #houseList .list-item, #supportTicketList .list-item").forEach(e=>e.classList.remove("selected")),l.classList.add("selected")}
+        
+        function selectSupportTicket(e,l){selectedTicketId=e;const o=allTickets.find(l=>l.Id===e);if(!o)return;selectedPlayerId=o.ReporterId,document.getElementById("supportTicketActions").style.display="block",document.getElementById("targetTicketName").innerText=`Ticket von ${o.ReporterName}`,document.getElementById("ticketMessageDisplay").innerText=o.Message;const n=document.getElementById("existingCommentDisplay");n.innerHTML="";let t=[];"string"==typeof o.AdminComment&&o.AdminComment.startsWith("[")?t=JSON.parse(o.AdminComment):Array.isArray(o.AdminComment)?t=o.AdminComment:o.AdminComment&&(t=[{Timestamp:"Früher",AdminName:"System",Text:o.AdminComment}]),t.length>0?t.forEach(e=>{const l=document.createElement("p");l.style.marginBottom="5px",l.style.borderBottom="1px solid #444",l.style.paddingBottom="5px";const o=e.Text.replace(/</g,"&lt;").replace(/>/g,"&gt;");l.innerHTML=`<strong>[${e.Timestamp} - ${e.AdminName}]:</strong><br>${o}`,n.appendChild(l)}):n.innerText="Keine Kommentare vorhanden.",document.getElementById("newCommentInput").value="";const s=document.getElementById("priorityToggleButton");o.IsPriority?(s.innerText="Priorität Entfernen",s.className="btn yellow"):(s.innerText="Priorität Setzen",s.className="btn blue"),document.querySelectorAll("#playerList .list-item, #houseList .list-item, #supportTicketList .list-item").forEach(e=>e.classList.remove("selected")),l.classList.add("selected")}
+        
+        function handleSupportTicketAction(e,l){if(!selectedTicketId)return alert("Wähle zuerst ein Ticket aus.");const o=allTickets.find(l=>l.Id===selectedTicketId);if(!o)return;if("updateStatus"===e)mp.trigger("adminPanel:client:support:updateStatus",selectedTicketId,l),"Geschlossen"===l&&(closePanel(),setTimeout(()=>mp.events.callRemote("adminPanel:requestOpen"),200));else if("togglePriority"===e)mp.trigger("adminPanel:client:support:setPriority",selectedTicketId,!o.IsPriority),o.IsPriority=!o.IsPriority,selectSupportTicket(o.Id,document.querySelector("#supportTicketList .list-item.selected"));else if("addComment"===e){const l=document.getElementById("newCommentInput").value;if(!l.trim())return;mp.trigger("adminPanel:client:support:addComment",selectedTicketId,l),Array.isArray(o.AdminComment)||(o.AdminComment="string"==typeof o.AdminComment&&o.AdminComment.startsWith("[")?JSON.parse(o.AdminComment||"[]"):o.AdminComment?[{Timestamp:"Früher",AdminName:"System",Text:o.AdminComment}]:[]),o.AdminComment.push({Timestamp:"Jetzt",AdminName:"Ich",Text:l}),selectSupportTicket(o.Id,document.querySelector("#supportTicketList .list-item.selected"))}}
+        
+        function confirmAndDeleteVehicle(){const e=parseInt(document.getElementById("vehDbIdInput").value,10);!isNaN(e)&&confirm(`Willst du das Fahrzeug mit der ID ${e} wirklich zerstören? Es wird damit unwiderruflich gelöscht.`)&&mp.trigger("adminPanel:client:deleteVehicleDB",e)}
+// Ersetze die komplette handleAction-Funktion mit dieser hier.
+
+function handleAction(action, param) {
+    if (["goto", "gethere", "heal", "revive", "kick", "ban", "unban", "giveMoney", "giveWeapon", "toggleSpectate", "toggleFreeze", "setPlayerDimension"].includes(action)) {
+        if (!selectedPlayerId) return alert("Wähle zuerst einen Spieler oder ein Support-Ticket aus.");
+        if (action === "kick" || action === "ban") {
+            const reason = prompt(`Grund für ${action}:`, "Regelverstoß");
+            if (reason) mp.trigger(`adminPanel:client:${action}`, selectedPlayerId, reason);
+        } else if (action === "giveMoney") {
+            const amount = parseInt(document.getElementById("moneyAmount").value, 10);
+            const type = document.getElementById("moneyTypeWrapper").dataset.value;
+            if (amount > 0) mp.trigger("adminPanel:client:giveMoney", selectedPlayerId, amount, type);
+        } else if (action === "giveWeapon") {
+            const weapon = document.getElementById("weaponName").value;
+            if (weapon) mp.trigger("adminPanel:client:giveWeapon", selectedPlayerId, weapon);
+        } else if (action === "setPlayerDimension") {
+            const dim = parseInt(document.getElementById("dimensionInput").value, 10);
+            if (!isNaN(dim)) mp.trigger("adminPanel:client:setPlayerDimension", selectedPlayerId, dim);
+        } else {
+            mp.trigger(`adminPanel:client:${action}`, selectedPlayerId);
+        }
+    } else if (["teleportToHouse", "setHouseOwner"].includes(action)) {
+        if (!selectedHouseId) return alert("Wähle zuerst ein Haus aus.");
+        if (action === "setHouseOwner") {
+            const ownerId = parseInt(document.getElementById("houseOwnerInput").value, 10);
+            if (!isNaN(ownerId)) mp.trigger(`adminPanel:client:${action}`, selectedHouseId, ownerId);
+        } else {
+            mp.trigger(`adminPanel:client:${action}`, selectedHouseId);
+        }
+    // =========================================================================================
+    // HIER WAR DER FEHLER. ICH HABE DIE LISTE UM DIE FEHLENDEN AKTIONEN ERWEITERT
+    // =========================================================================================
+    } else if (["spawnTempVehicle", "createPersVehicle", "createFactionVehicle", "tptoVehicle", "parkVehicleInAlta", "forceToggleLock", "forceToggleEngine", "fetchVehicle", "repairVehicle"].includes(action)) {
+         
+         // Und hier habe ich die Logik für fetchVehicle und repairVehicle hinzugefügt
+         if (['tptoVehicle', 'parkVehicleInAlta', 'fetchVehicle', 'repairVehicle'].includes(action)) {
+            const vehId = parseInt(document.getElementById("vehDbIdInput").value, 10);
+            if(!isNaN(vehId)) mp.trigger(`adminPanel:client:${action}`, vehId);
+        } else if (action === 'spawnTempVehicle') {
+            const model = document.getElementById("tempVehModelInput").value;
+            if (model) mp.trigger('adminPanel:client:spawnTempVehicle', model);
+        } else if (action === 'createPersVehicle') {
+            const model = document.getElementById("persVehModelInput").value;
+            const ownerId = parseInt(document.getElementById("persVehOwnerInput").value, 10);
+            const c1 = parseInt(document.getElementById("persVehColor1Input").value, 10) || 0;
+            const c2 = parseInt(document.getElementById("persVehColor2Input").value, 10) || 0;
+            const plate = document.getElementById("persVehPlateInput").value || "NEU";
+            if(model && !isNaN(ownerId)) mp.trigger("adminPanel:client:createPersVehicle", model, ownerId, c1, c2, plate);
+        } else if (action === 'createFactionVehicle') {
+            const model = document.getElementById("factionVehModelInput").value;
+            const factionId = parseInt(document.getElementById("factionIdInput").value, 10);
+            const plate = document.getElementById("factionPlateInput").value;
+            const c1 = parseInt(document.getElementById("factionVehColor1Input").value, 10) || 0;
+            const c2 = parseInt(document.getElementById("factionVehColor2Input").value, 10) || 0;
+            if(model && !isNaN(factionId) && plate) mp.trigger("adminPanel:client:createFactionVehicle", model, factionId, plate, c1, c2);
+        } else if (action === "forceToggleLock" || action === "forceToggleEngine") {
+            mp.trigger(`adminPanel:client:${action}`, param);
+        }
+    } else if (action === 'teleportToCoords') {
+        const xVal = document.getElementById('coordX').value;
+        const yVal = document.getElementById('coordY').value;
+        const zVal = document.getElementById('coordZ').value;
+        if (xVal && yVal && zVal) {
+            const x = parseFloat(xVal);
+            const y = parseFloat(yVal);
+            const z = parseFloat(zVal);
+            if (!isNaN(x) && !isNaN(y) && !isNaN(z)) mp.trigger('adminPanel:client:teleportToCoords', x, y, z);
+        }
+    } else if (action === 'teleportToLocation') {
+        const locName = document.getElementById("tpLocationWrapper").dataset.value;
+        if(locName) mp.trigger("adminPanel:client:teleportToLocation", locName, param);
+    } else if (["sendAdminChat", "sendAnnouncement", "spawnAdminVehicle", "goBack", "toggleGodMode", "toggleNoClip", "toggleInvisibility", "toggleAduty"].includes(action)) {
+        if (action === 'sendAdminChat' || action === 'sendAnnouncement') {
+            const message = action === 'sendAdminChat' ? document.getElementById("adminChatMessage").value : document.getElementById("announcementMessage").value;
+            if (message) {
+                mp.trigger(`adminPanel:client:${action}`, message);
+                document.getElementById(action === 'sendAdminChat' ? "adminChatMessage" : "announcementMessage").value = "";
+            }
+        } else {
+            mp.trigger(`adminPanel:client:${action}`);
+        }
+    }
+}
+     
+    </script>
+</body>
+</html>

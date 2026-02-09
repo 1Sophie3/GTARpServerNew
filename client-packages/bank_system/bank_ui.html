@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Bankverwaltung</title>
+  <link rel="stylesheet" href="bank_ui.css">
+</head>
+<body>
+  <div id="bankMenu" class="bank-container" style="display: none;">
+    <div class="header">
+      <h2>Bankverwaltung</h2>
+      <button id="closeBtn" class="close-button">X</button>
+    </div>
+    
+    <div class="account-info">
+      <p>Bargeld: <span id="cashBalance">0€</span></p>
+      <p>Bankguthaben: <span id="bankBalance">0€</span></p>
+      <p>Kontonummer: <span id="accountNumber"></span></p>
+    </div>
+
+    <div class="tab-navigation">
+      <button class="tab-btn active" data-tab="panel-actions">Transaktionen</button>
+      <button class="tab-btn" data-tab="panel-history">Kontoauszug</button>
+    </div>
+
+    <div class="content">
+      <div id="panel-actions" class="tab-panel active">
+        <div class="transaction-section">
+          <h3>Ein- & Auszahlung</h3>
+          <input type="number" id="amountInput" placeholder="Betrag" min="1" step="1">
+          <button id="depositBtn">Einzahlen</button>
+          <button id="withdrawBtn">Abheben</button>
+        </div>
+        <div class="transaction-section">
+          <h3>Überweisung</h3>
+          <input type="text" id="transferAccountInput" placeholder="Empfänger-Kontonummer (9 Ziffern)">
+          <input type="number" id="transferAmountInput" placeholder="Betrag" min="1" step="1">
+          <input type="text" id="transferDescriptionInput" placeholder="Verwendungszweck (Erforderlich)" maxlength="50">
+          <button id="transferBtn">Überweisen</button>
+        </div>
+      </div>
+
+      <div id="panel-history" class="tab-panel">
+        <div class="transaction-section" id="transactionHistory">
+            <h3>Letzte Transaktionen</h3>
+            <ul id="transactionList">
+                </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="bankscript.js"></script>
+</body>
+</html>

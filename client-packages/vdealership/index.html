@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Fahrzeughändler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 id="vehicle-name">Fahrzeugname</h2>
+            <button class="close-button" onclick="closeMenu()">X</button>
+        </div>
+        <div class="content">
+            <p id="vehicle-description">Hier steht eine tolle Beschreibung des Fahrzeugs, die alle Features hervorhebt.</p>
+            <div class="info-bar">
+                <span class="price-tag">Preis: <strong id="vehicle-price">$0</strong></span>
+            </div>
+        </div>
+        <div class="buttons">
+            <button id="buy-btn" onclick="buyVehicle(false)">Privat kaufen</button>
+            <button id="buy-faction-btn" style="display: none;" onclick="buyVehicle(true)">Für Fraktion kaufen</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Führerschein</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .license-card {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 280px;
+            background-color: rgba(15, 25, 35, 0.95);
+            border: 1px solid rgba(0, 255, 255, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            color: #ffffff;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(0, 255, 255, 0.05), rgba(0, 255, 255, 0.05) 1px, transparent 1px, transparent 10px),
+                radial-gradient(ellipse at bottom right, rgba(80, 0, 160, 0.2), transparent 70%);
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .header h2 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ffff;
+            text-shadow: 0 0 4px rgba(0, 255, 255, 0.7);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .owner-info { display: flex; justify-content: space-between; align-items: baseline; margin-top: 2px; }
+        .owner-name { font-size: 11px; color: #ccc; }
+        .owner-id { font-size: 9px; color: #88a1b9; }
+        .content { padding: 5px 0; }
+        .license-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .license-row .icon {
+            width: 30px;
+            text-align: center;
+            color: #00ffff;
+            font-size: 16px;
+        }
+        .license-row .label { flex-grow: 1; padding-left: 10px; }
+        .license-date { font-size: 11px; color: #ccc; min-width: 70px; text-align: right; }
+        .license-row .status { font-size: 20px; font-weight: bold; width: 20px; text-align: center; }
+        .status.valid { color: #00ff6a; text-shadow: 0 0 5px #00ff6a; }
+        .status.invalid { color: #ff2d2d; text-shadow: 0 0 5px #ff2d2d; }
+    </style>
+</head>
+<body>
+
+<div class="license-card">
+    <div class="header">
+        <h2>FÜHRERSCHEIN</h2>
+        <div class="owner-info">
+            <div class="owner-name" id="owner-name"></div>
+            <div class="owner-id" id="owner-id"></div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="license-row">
+            <div class="icon"><i class="fa-solid fa-car"></i></div>
+            <div class="label">PKW-Klasse</div>
+            <div class="license-date" id="date-car"></div>
+            <div class="status" id="status-car"></div>
+        </div>
+        <div class="license-row">
+            <div class="icon"><i class="fa-solid fa-truck"></i></div>
+            <div class="label">LKW-Klasse</div>
+            <div class="license-date" id="date-truck"></div>
+            <div class="status" id="status-truck"></div>
+        </div>
+        <div class="license-row">
+            <div class="icon"><i class="fa-solid fa-ship"></i></div>
+            <div class="label">Bootsklasse</div>
+            <div class="license-date" id="date-boat"></div>
+            <div class="status" id="status-boat"></div>
+        </div>
+        <div class="license-row">
+            <div class="icon"><i class="fa-solid fa-plane"></i></div>
+            <div class="label">Flugzeugklasse</div>
+            <div class="license-date" id="date-aircraft"></div>
+            <div class="status" id="status-aircraft"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setData(data) {
+        document.getElementById('owner-name').textContent = `Inhaber: ${data.ownerName}`;
+        document.getElementById('owner-id').textContent = `ID: SA-${data.ownerId.toString().padStart(8, '0')}`;
+        
+        const setStatus = (elementPrefix, date) => {
+            const statusEl = document.getElementById(`status-${elementPrefix}`);
+            const dateEl = document.getElementById(`date-${elementPrefix}`);
+            
+            if (date) {
+                statusEl.innerHTML = '&#10004;'; // Haken
+                statusEl.className = 'status valid';
+                dateEl.textContent = date;
+            } else {
+                statusEl.innerHTML = '&#10006;'; // Kreuz
+                statusEl.className = 'status invalid';
+                dateEl.textContent = '---';
+            }
+        };
+
+        setStatus('car', data.carData);
+        setStatus('truck', data.truckData);
+        setStatus('boat', data.boatData);
+        setStatus('aircraft', data.aircraftData);
+    }
+</script>
+
+</body>
+</html>

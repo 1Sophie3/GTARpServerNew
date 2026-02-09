@@ -1,0 +1,166 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #fff;
+    font-size: 14px;
+}
+
+.garage-container {
+    background-color: rgba(30, 30, 30, 0.9);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Cyan glow */
+    width: 600px;
+    max-width: 90%;
+    border: 1px solid #00ffff; /* Cyan border */
+    position: relative; /* Für die Positionierung des Close-Buttons im Header */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #00ffff;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+    font-size: 24px;
+}
+
+.close-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+    background-color: #c82333;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 5px 5px 0 0;
+    margin: 0 5px;
+}
+
+.tab-button:hover {
+    background-color: #555;
+}
+
+.tab-button.active {
+    background-color: #00ffff;
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+}
+
+.tab-content {
+    display: none;
+    padding: 15px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.vehicle-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.vehicle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #2a2a2a;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.vehicle-item:hover {
+    background-color: #3a3a3a;
+}
+
+.vehicle-details {
+    flex-grow: 1;
+}
+
+.vehicle-details p {
+    margin: 2px 0;
+}
+
+.vehicle-details .model-name {
+    font-weight: bold;
+    color: #00ff00; /* Green for model name */
+}
+
+.vehicle-details .plate {
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+.vehicle-actions button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    margin-left: 10px; /* Abstand zwischen den Buttons */
+}
+
+.vehicle-actions button:hover {
+    background-color: #0056b3;
+}
+
+.vehicle-actions button.red-button {
+    background-color: #dc3545;
+}
+
+.vehicle-actions button.red-button:hover {
+    background-color: #c82333;
+}
+
+.capacity-info {
+    text-align: right;
+    margin-top: 15px;
+    color: #aaa;
+}
+
+/* Entfernte den vorherigen close-button Style, da er jetzt im Header ist */
+/* .close-button { ... } */

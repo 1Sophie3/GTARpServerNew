@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Weiter angeln?</title>
+    <link rel="stylesheet" href="prompt_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="prompt-container">
+    <div class="header">
+        <h2>ANGELN</h2>
+    </div>
+    <div class="content">
+        <p>Du hast etwas gefangen! Möchtest du weiter angeln?</p>
+        <p class="small-text">(Drücke 'E' für Ja oder warte 5 Sekunden)</p>
+        <div class="button-group">
+            <button id="btn-yes" onclick="respond(true)">Ja</button>
+            <button id="btn-no" onclick="respond(false)">Nein</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function respond(choice) {
+        // Diese Funktion sendet das Ergebnis an den Client-Code (fishing.js)
+        mp.trigger('client:fishing:promptResponse', choice);
+    }
+</script>
+
+</body>
+</html>

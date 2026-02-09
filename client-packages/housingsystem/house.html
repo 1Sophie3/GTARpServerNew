@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eingabe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        body {
+            background-color: transparent;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(20, 20, 20, 0.85);
+            padding: 25px 30px;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        h3 {
+            margin-top: 0;
+            font-weight: 500;
+            font-size: 18px;
+        }
+        input {
+            padding: 12px;
+            width: 240px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #444;
+            background: #1a1a1a;
+            color: white;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        button {
+            padding: 10px 25px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 id="title">Titel</h3>
+        <input type="text" id="inputField" placeholder="Wert eingeben..." onkeydown="handleEnter(event)" autofocus>
+        <button onclick="submit()">Bestätigen</button>
+    </div>
+
+    <script>
+        // Setzt den Titel des Fensters
+        function setTitle(titleText) {
+            document.getElementById('title').innerText = titleText;
+        }
+
+        // Sendet die Eingabe an das Haupt-Client-Skript
+        function submit() {
+            const value = document.getElementById('inputField').value;
+            // Prüft, ob ein Wert vorhanden ist und ob das mp-Objekt existiert
+            if (value && typeof mp !== 'undefined') {
+                // Dieses Event muss exakt mit dem in 'addOnce' übereinstimmen
+                mp.trigger('Client:Cef:InputSubmit', value);
+            }
+        }
+        
+        // Erlaubt das Absenden mit der Enter-Taste
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                submit();
+            }
+        }
+    </script>
+</body>
+</html>

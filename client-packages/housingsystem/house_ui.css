@@ -1,0 +1,131 @@
+/* Global Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: transparent;
+    color: white;
+}
+
+/* Container im Stil des Banksystems */
+.house-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(30, 30, 30, 0.85);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Cyan Glow */
+    width: 400px;
+    max-width: 90%;
+    border: 1px solid #00ffff;
+}
+
+/* Header & Schließen-Button */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.header h2 {
+    color: #00ffff;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+    font-size: 22px;
+}
+
+.close-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+    background-color: #c82333;
+}
+
+/* Infobereich (Preis, Besitzer, etc.) */
+.house-info p {
+    margin: 4px 0;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.house-info span {
+    color: #00ffff;
+    font-weight: bold;
+}
+
+/* Bereich für die Buttons */
+.menu-options {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.menu-button {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #0056b3;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.menu-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.02);
+}
+
+.menu-button.sell {
+    background-color: #c82333;
+    border-color: #a01a26;
+}
+
+.menu-button.sell:hover {
+    background-color: #a01a26;
+}
+
+/* Stile für die Schlüsselverwaltung */
+.key-holder-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.remove-key-btn {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #c82333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.remove-key-btn:hover {
+    background-color: #a01a26;
+}

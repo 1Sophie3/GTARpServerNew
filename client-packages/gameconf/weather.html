@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Weather Fetcher</title>
+  <script>
+    // Diese Funktion ruft periodisch die Wetterdaten ab und schickt das Ergebnis an den Client.
+    function updateWeather() {
+      fetch('https://api.openweathermap.org/data/2.5/weather?id=2817105&appid=c7a89381823a4970eaae213db9bd14ac&units=metric')
+        .then(response => response.json())
+        .then(data => {
+          let weatherId = data.weather[0].id;
+          let weatherType = "CLEAR";
+          if (weatherId >= 200 && weatherId <= 232) {
+            weatherType = "THUNDER";
+          } else if (weatherId >= 300 && weatherId <= 531) {
+            weatherType = "RAIN";
+          } else if (weatherId >= 600 && weatherId <= 622) {
+            weatherType = "SNOW";
+          } else if (weatherId >= 701 && weatherId <= 781) {
+            weatherType = "FOGGY";
+          } else if (weatherId === 800) {
+            weatherType = "EXTRASUNNY";
+          } else if (weatherId >= 801 && weatherId <= 804) {
+            weatherType = "CLOUDS";
+          }
+
+          // Sende das Wetter-Ergebnis an den Client-Code mittels mp.trigger
+          mp.trigger('updateWeather', weatherType);
+          console.log('weather.html: Wetter abgerufen und weitergegeben:', weatherType);
+        })
+        .catch(error => console.error("Fehler beim Abrufen des Wetters:", error));
+    }
+    // Aufruf sofort beim Laden und danach jede Minute
+    window.onload = () => {
+      updateWeather();
+      setInterval(updateWeather, 60000);
+    };
+  </script>
+  <style>
+    /* Den Browser optisch verbergen */
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: transparent;
+    }
+    body {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+</body>
+</html>

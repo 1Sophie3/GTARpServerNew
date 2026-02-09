@@ -1,0 +1,111 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #f0f0f0;
+    user-select: none;
+}
+
+.container {
+    background: rgba(20, 25, 30, 0.85);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    width: 550px;
+    border: 1px solid rgba(0, 255, 255, 0.6);
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+    padding-bottom: 15px;
+}
+
+.header h2 {
+    color: #00ffff;
+    margin: 0;
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.7);
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.close-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.close-button:hover {
+    background-color: #c82333;
+}
+
+.content p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+
+.info-bar {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.price-tag {
+    font-size: 20px;
+    color: #fff;
+}
+
+.price-tag strong {
+    color: #00ff8c;
+    font-weight: bold;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.buttons button {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #0056b3;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    flex-grow: 1;
+    margin: 0 10px;
+}
+
+.buttons button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+#buy-faction-btn {
+    background-color: #17a2b8;
+    border-color: #10707f;
+}
+
+#buy-faction-btn:hover {
+    background-color: #10707f;
+    box-shadow: 0 0 10px rgba(23, 162, 184, 0.5);
+}

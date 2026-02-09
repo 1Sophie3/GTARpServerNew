@@ -1,3 +1,5 @@
+*.ttf
+old_code/
 # Dependencies
 node_modules/
 package-lock.json
@@ -37,7 +39,20 @@ configs/conf.json
 cef/rp-ui/node_modules/
 cef/rp-ui/dist/
 
+# Weitere temporäre/generierte/vertrauliche Dateien und Ordner
+client-packages/web/
+client-packages/game_resources/
+cef/rp-ui/node_modules/
+logs/
+database/data/
+database/migrations/
+server-packages/rp-core/*.dll
+server-packages/rp-core/*.pdb
+*.log
+
 # RAGE:MP Server Files (werden auf dem Server benötigt)
+client-packages/game_resources/
+client-packages/web/
 server-files/
 runtime/
 

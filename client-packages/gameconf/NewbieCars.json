@@ -1,0 +1,202 @@
+[
+    {
+        "vehicle": "asbo",
+        "position": { "x": -980.11, "y": -2710.49, "z": 13.84 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -12.07 },
+        "color1": 92,
+        "color2": 92,
+        "NumberPlate": "Newbie"
+    },
+    {
+        "vehicle": "asbo",
+        "position": { "x": -983.21, "y": -2709.82, "z": 13.83 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -15.65 },
+        "color1": 92,
+        "color2": 92,
+        "NumberPlate": "Newbie"
+    },
+    {
+        "vehicle": "asbo",
+        "position": { "x": -986.22, "y": -2708.58, "z": 13.83 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -22.45 },
+        "color1": 92,
+        "color2": 92,
+        "NumberPlate": "Newbie"
+    },
+    {
+        "vehicle": "asbo",
+        "position": { "x": -989.66, "y": -2706.91, "z": 13.83 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -27.20 },
+        "color1": 92,
+        "color2": 92,
+        "NumberPlate": "Newbie"
+    },
+	{
+        "vehicle": "scorcher",
+        "position": { "x": 167.45, "y": -1008.77, "z": 29.28 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -64.06 },
+        "color1": 0,
+        "color2": 0,
+        "NumberPlate": "Newbie"
+    },
+    {
+        "vehicle": "scorcher",
+        "position": { "x": 168.18, "y": -1010.23, "z": 29.33 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -62.73 },
+        "color1": 0,
+        "color2": 0,
+        "NumberPlate": "Newbie"
+    },
+    {
+        "vehicle": "scorcher",
+        "position": { "x": 169.08, "y": -1011.59, "z": 29.35 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -61.04 },
+        "color1": 0,
+        "color2": 0,
+        "NumberPlate": "Newbie"
+    },
+    {
+        "vehicle": "scorcher",
+        "position": { "x": 170.63, "y": -1012.61, "z": 29.35 },
+        "rotation": { "x": 0.00, "y": 0.00, "z": -55.37 },
+        "color1": 0,
+        "color2": 0,
+        "NumberPlate": "Newbie"
+    },
+	{
+    "vehicle": "scorcher",
+    "position": { "x": 1162.21, "y": -768.18, "z": 57.45 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -177.70 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 1160.62, "y": -768.07, "z": 57.46 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -167.15 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 1159.59, "y": -768.08, "z": 57.47 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -171.47 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 1158.06, "y": -768.24, "z": 57.48 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -170.01 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 376.52, "y": -1116.50, "z": 29.41 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -175.03 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 374.89, "y": -1116.48, "z": 29.41 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -175.44 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": -1569.24, "y": -903.13, "z": 9.96 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 16.82 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": -1570.79, "y": -903.42, "z": 9.92 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 8.39 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": -1572.45, "y": -903.49, "z": 9.87 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 9.61 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": -1574.05, "y": -903.59, "z": 9.82 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 7.77 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 1993.74, "y": 3777.67, "z": 32.18 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -152.25 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 1995.14, "y": 3778.45, "z": 32.18 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -154.41 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 1996.57, "y": 3779.12, "z": 32.18 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": -144.41 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 116.95, "y": 6598.26, "z": 32.02 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 90.48 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 117.01, "y": 6600.17, "z": 32.00 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 90.36 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 119.68, "y": 6600.17, "z": 32.02 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 86.05 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  },
+  {
+    "vehicle": "scorcher",
+    "position": { "x": 119.51, "y": 6598.19, "z": 32.03 },
+    "rotation": { "x": 0.00, "y": 0.00, "z": 83.17 },
+    "color1": 0,
+    "color2": 0,
+    "NumberPlate": "Newbie"
+  }
+]

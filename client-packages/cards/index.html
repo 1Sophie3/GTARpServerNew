@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Personalausweis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        /* Grund-Setup */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Verhindert Scrollbalken */
+        }
+
+        /* Ausweis-Container: Positioniert unten rechts, Größe und Stil angepasst */
+        .id-card {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 280px;
+            height: 180px; /* Ein bisschen mehr Platz für das neue Feld */
+            background-color: rgba(15, 25, 35, 0.95);
+            border: 1px solid rgba(0, 255, 255, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Cyan Glow */
+            color: #ffffff;
+            /* Copyright-freier GTA-V-Style Hintergrund mit CSS-Gradienten */
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(0, 255, 255, 0.05), rgba(0, 255, 255, 0.05) 1px, transparent 1px, transparent 10px),
+                radial-gradient(ellipse at bottom right, rgba(80, 0, 160, 0.2), transparent 70%);
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+
+        /* Kopfzeile des Ausweises */
+        .header {
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 700;
+            color: #00ffff;
+            text-shadow: 0 0 4px rgba(0, 255, 255, 0.7);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Hauptinhalt mit den RP-Daten */
+        .content {
+            display: grid;
+            grid-template-columns: 90px 1fr; 
+            gap: 3px 8px; /* Etwas kleinerer vertikaler Abstand */
+            font-size: 11px;
+        }
+
+        .content .label {
+            font-weight: 400;
+            color: #88a1b9;
+            text-align: right;
+        }
+
+        .content .data {
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        /* Footer für die Unterschrift */
+        .footer {
+            margin-top: auto; /* Schiebt den Footer nach unten */
+            padding-top: 5px;
+        }
+
+        .signature-field .label {
+             font-size: 9px;
+             color: #88a1b9;
+        }
+
+        .signature {
+            font-family: 'Sacramento', cursive;
+            font-size: 24px;
+            color: #00ffff;
+            text-shadow: 0 0 4px rgba(0, 255, 255, 0.7);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            line-height: 1;
+            margin-top: -5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="id-card">
+    <div class="header">
+        <h2>State of San Andreas</h2>
+    </div>
+
+    <div class="content">
+        <span class="label">Nachname</span>
+        <span class="data" id="lastname"></span>
+        
+        <span class="label">Vorname</span>
+        <span class="data" id="firstname"></span>
+        
+        <span class="label">Geburtsdatum</span>
+        <span class="data" id="birthdate"></span>
+        
+        <span class="label">Geschlecht</span>
+        <span class="data" id="gender"></span>
+
+        <span class="label">ID-Nummer</span>
+        <span class="data" id="id-number"></span>
+        
+        <span class="label">Ausgestellt am</span>
+        <span class="data" id="creation-date"></span>
+    </div>
+
+    <div class="footer">
+        <div class="signature-field" id="signature-container">
+            <div class="signature" id="signature"></div>
+            <div class="label">Unterschrift des Inhabers</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Füllt den Ausweis mit den Daten, die vom Client-Skript übergeben werden.
+    function setData(firstname, lastname, birthdate, gender, accountId, creationDate) {
+        // Daten in die entsprechenden Felder eintragen
+        document.getElementById('lastname').textContent = lastname;
+        document.getElementById('firstname').textContent = firstname;
+        document.getElementById('birthdate').textContent = birthdate;
+        document.getElementById('gender').textContent = gender;
+        document.getElementById('creation-date').textContent = creationDate;
+
+        const signatureContainer = document.getElementById('signature-container');
+        const signatureElement = document.getElementById('signature');
+
+        // Logik für die Unterschrift: Nur anzeigen, wenn ein Name vorhanden ist.
+        if (firstname && lastname) {
+            signatureElement.textContent = `${firstname} ${lastname}`;
+            signatureContainer.style.display = 'block'; // Zeige den ganzen Unterschriften-Block an
+        } else {
+            signatureElement.textContent = '';
+            signatureContainer.style.display = 'none'; // Verstecke den ganzen Unterschriften-Block
+        }
+
+        // Account-ID als Ausweisnummer setzen und formatieren
+        if (accountId) {
+            // Formatiert die ID mit führenden Nullen (z.B. 123 -> 00000123)
+            const formattedId = accountId.toString().padStart(8, '0');
+            document.getElementById('id-number').textContent = `SA-${formattedId}`;
+        } else {
+            document.getElementById('id-number').textContent = 'N/A';
+        }
+    }
+</script>
+
+</body>
+</html>

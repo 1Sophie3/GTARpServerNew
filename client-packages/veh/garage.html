@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Garagen System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="garage-container">
+        <div class="header">
+            <h2>Garagen Verwaltung</h2>
+            <button class="close-button" onclick="closeGarageUI()">X</button>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab(event, 'spawnTab')">Fahrzeuge Spawnen</button>
+            <button class="tab-button" onclick="openTab(event, 'storeTab')">Fahrzeuge Einlagern</button>
+        </div>
+
+        <div id="spawnTab" class="tab-content" style="display: block;">
+            <h3>Deine Fahrzeuge in der Garage (<span id="currentCapacity">0</span>/<span id="maxCapacity">0</span>)</h3>
+            <div id="inGarageVehiclesList" class="vehicle-list">
+                </div>
+        </div>
+
+        <div id="storeTab" class="tab-content" style="display: none;">
+            <h3>Einlagerbare Fahrzeuge in deiner Nähe</h3>
+            <div id="currentVehicleInfo" class="vehicle-list">
+                <p style="text-align: center; color: #ccc; padding: 20px;">Keine einlagerbaren Fahrzeuge in deiner Nähe.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="garagescript.js"></script>
+</body>
+</html>

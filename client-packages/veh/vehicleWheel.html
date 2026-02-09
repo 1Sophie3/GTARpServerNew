@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Wheel</title>
+    <style>
+        body {
+            background-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        #wheel-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 450px; /* Radius wird durch JS bestimmt, Größe ist für umgebenden Platz */
+            height: 450px;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Dies ist die unsichtbare Speiche, die für die perfekte Drehung sorgt */
+        .wheel-spoke {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 1px; /* Die Speiche selbst ist unsichtbar */
+            transform-origin: left center; /* Dreht sich um den Mittelpunkt des Rades */
+        }
+
+        /* Dies ist der sichtbare Button */
+        .wheel-item {
+            position: absolute;
+            /* Positioniert den Button am Ende der Speiche und zentriert ihn dort */
+            left: 100%; 
+            top: 0;
+            
+            /* Zentriert den Button auf der Speiche und dreht ihn zurück, damit die Schrift gerade bleibt */
+            transform-origin: center;
+            
+            /* Pillen-Button Style */
+            background: rgba(10, 25, 40, 0.85);
+            border: 1px solid rgba(0, 180, 255, 0.7);
+            border-radius: 25px;
+            padding: 8px 18px;
+            box-shadow: 0 0 8px 1px rgba(0, 225, 255, 0.6);
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            white-space: nowrap;
+        }
+        .wheel-item:hover {
+             background: rgba(0, 180, 255, 0.7);
+             border-color: rgba(170, 240, 255, 1);
+             /* Skalierung wird jetzt direkt in der Haupttransformation angewendet */
+        }
+        
+        #center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 25, 40, 0.9);
+            width: 160px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.3;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 180, 255, 0.6);
+            box-shadow: 0 0 12px 2px rgba(0, 225, 255, 0.65);
+        }
+    </style>
+</head>
+<body>
+    <div id="wheel-container"></div>
+    <div id="center-text"></div>
+
+    <script>
+        function populateWheel(itemsJson, centerText) {
+            const container = document.getElementById('wheel-container');
+            container.innerHTML = '';
+            document.getElementById('center-text').innerHTML = centerText;
+
+            const items = typeof itemsJson === 'string' ? JSON.parse(itemsJson) : itemsJson;
+            if (items.length === 0) return;
+
+            const angleStep = 360 / items.length;
+            const radius = 190; // Der Abstand vom Zentrum
+
+            items.forEach((item, index) => {
+                const angle = (angleStep * index) - 90; // Beginnt oben
+
+                // 1. Erstelle die "Speiche"
+                const spoke = document.createElement('div');
+                spoke.className = 'wheel-spoke';
+                spoke.style.width = `${radius}px`;
+                spoke.style.transform = `rotate(${angle}deg)`;
+
+                // 2. Erstelle den sichtbaren Button
+                const button = document.createElement('div');
+                button.className = 'wheel-item';
+                button.innerText = item.Name;
+                
+                // 3. KRITISCHER FIX: Dreht den Button zurück, damit der Text GERADE bleibt.
+                // Und zentriert ihn auf seinem Ankerpunkt am Ende der Speiche.
+                button.style.transform = `translateY(-50%) rotate(${-angle}deg)`;
+
+                // 4. Binde die Events
+                button.onmouseover = () => {
+                    button.style.transform = `translateY(-50%) rotate(${-angle}deg) scale(1.1)`;
+                    if ('mp' in window) mp.trigger('clientVehicleWheelSetHover', item.Action);
+                };
+                button.onmouseout = () => {
+                    button.style.transform = `translateY(-50%) rotate(${-angle}deg) scale(1.0)`;
+                    if ('mp' in window) mp.trigger('clientVehicleWheelSetHover', null);
+                };
+                button.onclick = () => {
+                    if ('mp' in window) mp.trigger('clientVehicleWheelAction', item.Action);
+                };
+
+                // 5. Füge alles zusammen
+                spoke.appendChild(button);
+                container.appendChild(spoke);
+            });
+        }
+    </script>
+</body>
+</html>

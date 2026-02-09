@@ -1,0 +1,100 @@
+const player = mp.players.local;
+let fishingRod = null;
+let continuePromptBrowser = null;
+let promptTimer = null;
+
+// Event vom Server: Starte das Angeln
+mp.events.add('client:fishing:start', () => {
+    // Falls noch eine Angel da ist, zerstöre sie zuerst
+    if (fishingRod !== null && mp.objects.exists(fishingRod)) {
+        fishingRod.destroy();
+        fishingRod = null;
+    }
+
+    // Angel-Objekt erstellen und an die Hand des Spielers heften
+    const rodModel = mp.game.joaat('prop_fishing_rod_01');
+    mp.game.streaming.requestModel(rodModel);
+    while (!mp.game.streaming.hasModelLoaded(rodModel)) {
+        mp.game.wait(0);
+    }
+
+    fishingRod = mp.objects.new(rodModel, player.position, {});
+    fishingRod.attachTo(player.handle, player.getBoneIndex(28422), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, true, true, false, false, 0, true);
+
+    // Angel-Animation abspielen
+    // 'amb@world_human_stand_fishing@base' ist eine gute Basis-Animation
+    mp.game.streaming.requestAnimDict('amb@world_human_stand_fishing@base');
+    while (!mp.game.streaming.hasAnimDictLoaded('amb@world_human_stand_fishing@base')) {
+        mp.game.wait(0);
+    }
+    player.taskPlayAnim('amb@world_human_stand_fishing@base', 'base', 8.0, 1.0, -1, 1, 1.0, false, false, false);
+});
+
+// Event vom Server: Stoppe das Angeln
+mp.events.add('client:fishing:stop', () => {
+    // Animation stoppen
+    player.stopAnimTask('amb@world_human_stand_fishing@base', 'base', 3.0);
+    
+    // Angel zerstören
+    if (fishingRod !== null && mp.objects.exists(fishingRod)) {
+        fishingRod.destroy();
+        fishingRod = null;
+    }
+    
+    // Falls die "Weiter-Angeln"-Abfrage offen ist, schließe sie
+    if (continuePromptBrowser) {
+        closeContinuePrompt();
+    }
+});
+
+// Event vom Server: Zeige die "Weiter angeln?" Abfrage
+mp.events.add('client:fishing:showContinuePrompt', () => {
+    // Animation stoppen, damit der Spieler nicht feststeckt, während die Abfrage läuft
+    player.stopAnimTask('amb@world_human_stand_fishing@base', 'base', 3.0);
+
+    if (fishingRod !== null && mp.objects.exists(fishingRod)) {
+        fishingRod.destroy();
+        fishingRod = null;
+    }
+
+    // Browser für die UI erstellen
+    if (continuePromptBrowser) {
+        closeContinuePrompt();
+    }
+    continuePromptBrowser = mp.browsers.new('package://fishingking/continuePrompt.html');
+    mp.gui.cursor.show(true, true);
+
+    // Timer, der die Abfrage nach 5 Sekunden automatisch schließt und "Nein" sendet
+    promptTimer = setTimeout(() => {
+        if (continuePromptBrowser) {
+            closeContinuePrompt();
+            mp.events.callRemote('server:fishing:continue', false); // Sende "Nein" an den Server
+        }
+    }, 5000); 
+});
+
+// Funktion, um auf die Antwort aus dem Browser zu reagieren
+mp.events.add('client:fishing:promptResponse', (response) => {
+    closeContinuePrompt();
+    mp.events.callRemote('server:fishing:continue', response);
+});
+
+function closeContinuePrompt() {
+    if (continuePromptBrowser) {
+        continuePromptBrowser.destroy();
+        continuePromptBrowser = null;
+        mp.gui.cursor.show(false, false);
+    }
+    if (promptTimer) {
+        clearTimeout(promptTimer);
+        promptTimer = null;
+    }
+}
+
+// Taste 'E' drücken, um die Abfrage zu bestätigen
+mp.keys.bind(0x45, true, () => { // 0x45 ist der KeyCode für 'E'
+    if (continuePromptBrowser !== null) {
+        closeContinuePrompt();
+        mp.events.callRemote('server:fishing:continue', true); // Sende "Ja" an den Server
+    }
+});

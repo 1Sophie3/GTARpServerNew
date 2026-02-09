@@ -1,0 +1,93 @@
+/* Global Styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    background: transparent; /* Machen wir transparent, RAGE kümmert sich um den Hintergrund */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Prompt Container - inspiriert von deiner bank-container Klasse */
+.prompt-container {
+    background: rgba(30, 30, 30, 0.85);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.55); /* Cyan Glow */
+    width: 450px;
+    max-width: 90%;
+    border: 1px solid #00ffff;
+    position: relative;
+    color: #fff;
+    text-align: center;
+}
+
+/* Header & Title */
+.header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.4);
+    padding-bottom: 15px;
+}
+
+.header h2 {
+    color: #00ffff;
+    margin: 0;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+    font-size: 24px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Content Area */
+.content p {
+    font-size: 18px;
+    margin: 15px 0;
+}
+
+.content .small-text {
+    font-size: 14px;
+    color: #ccc;
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Abstand zwischen den Buttons */
+}
+
+.button-group button {
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+#btn-yes {
+    background-color: #28a745; /* Green */
+    border: 1px solid #208a38;
+}
+
+#btn-yes:hover {
+    background-color: #218838;
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.7);
+}
+
+#btn-no {
+    background-color: #dc3545; /* Red */
+    border: 1px solid #b32a38;
+}
+
+#btn-no:hover {
+    background-color: #c82333;
+    box-shadow: 0 0 15px rgba(220, 53, 69, 0.7);
+}
