@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<meta>
+    <info name="gamemode" type="gamemode" description="My c# gamemode resource" />
+    <script src="Debug/netcoreapp3.1/gamemode.dll" />
+	</meta>
+
+
