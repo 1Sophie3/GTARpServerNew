@@ -73,8 +73,8 @@ namespace RPCore.Events
                 return;
             }
 
-            // Erstelle vereinfachte PlayerData und sende als JSON (keine Vor-/Nachnamen beim Login)
-            var playerData = new
+            // Sende Account-Daten als JSON an den Client (ohne Vor-/Nachnamen beim Login)
+            var accountData = new
             {
                 id = account.Id,
                 username = account.Username,
@@ -86,7 +86,7 @@ namespace RPCore.Events
                 lastPosition = new { x = account.LastPosition.X, y = account.LastPosition.Y, z = account.LastPosition.Z }
             };
 
-            string json = JsonConvert.SerializeObject(playerData);
+            string json = JsonConvert.SerializeObject(accountData);
             player.TriggerEvent("client:loginSuccess", json);
         }
     }

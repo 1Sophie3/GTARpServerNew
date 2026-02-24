@@ -1,4 +1,33 @@
-﻿// Speicherort: Features/cards.cs
+﻿// -----------------------------------------------------------------------------
+// Modul: Ausweis-System (IdCard)
+//
+// Beschreibung:
+// Dieses Modul stellt die Kernlogik für das Ausweis-System bereit. Es ist bewusst
+// plattformunabhängig gehalten und enthält keine direkte Verbindung zu GTA-Servern
+// (z.B. RAGE, FiveM). Die Methoden liefern die Ausweis-Daten als JSON zurück und
+// können von beliebigen Server-Handlern (Events, Commands, API-Endpunkte) genutzt
+// werden.
+//
+// Modularer Aufbau:
+// - Die Logik ist in einzelne Funktionen gekapselt, die nur Daten verarbeiten und
+//   zurückgeben.
+// - Plattformabhängige Handler (z.B. GTA-Events, Web-APIs) können diese Funktionen
+//   aufrufen und die Daten an das Frontend oder andere Systeme weiterleiten.
+// - Das Modul kann jederzeit erweitert werden (z.B. weitere Ausweis-Typen,
+//   Validierungen, Logging, neue Felder), ohne die Kernlogik zu verändern.
+//
+// Erweiterbarkeit:
+// - Neue Funktionen können einfach hinzugefügt werden.
+// - Die Rückgabe als JSON ermöglicht flexible Integration in verschiedene Systeme.
+// - Die Trennung von Logik und Plattform erleichtert Wartung und Skalierung.
+//
+// Beispiel-Erweiterungen:
+// - Zusätzliche Felder (Adresse, Staatsangehörigkeit, etc.)
+// - Validierung von Ausweis-Daten
+// - Logging von Ausweis-Aktionen
+// - Integration mit anderen Modulen (z.B. Polizei, Fraktionen)
+// -----------------------------------------------------------------------------
+// Speicherort: Features/cards.cs
 
 using GTANetworkAPI;
 using Newtonsoft.Json;
@@ -6,66 +35,17 @@ using System;
 using System.Linq;
 using RPCore.Database;
 
-public class IdCardCommands : Script
+public class IdCardCommands
 {
     // NEU: Direkter Befehl, um den eigenen Ausweis zu zeigen.
-    [Command("id", "ausweis")]
-    public void CMD_ShowSelfIdCard(Player player)
+    // Gibt die Ausweis-Daten für den eigenen Charakter zurück
+    public string GetSelfIdCardJson(string characterDataJson, int accountId, DateTime creationDate)
     {
-        if (!Accounts.IstSpielerEingeloggt(player)) return;
-
-        Accounts account = player.GetData<Accounts>(Accounts.Account_Key);
-        if (account == null || string.IsNullOrEmpty(account.CharacterData)) return;
-
+        if (string.IsNullOrEmpty(characterDataJson)) return null;
         try
         {
-            CharacterData charData = JsonConvert.DeserializeObject<CharacterData>(account.CharacterData);
-            if (charData == null) return;
-
-            var dataForClient = new
-            {
-                firstname = charData.Firstname,
-                lastname = charData.Lastname,
-                birth = charData.Birth,
-                gender = charData.Gender, // Deine Logik hier
-                accountId = account.ID,
-                creationDate = account.CreationDate.ToString("dd.MM.yyyy")
-            };
-
-            // Der Aufruf ist jetzt ein direkter TriggerEvent, kein RemoteEvent mehr.
-            player.TriggerEvent("showPlayerIdCard", JsonConvert.SerializeObject(dataForClient));
-        }
-        catch (JsonException) { /* Fehler ignorieren */ }
-    }
-
-    // NEU: Direkter Befehl, um den Ausweis anderen zu zeigen.
-    [Command("showid", "zeigeausweis")]
-    public void CMD_ShowIdToOther(Player player, int targetAccountId)
-    {
-        if (!Accounts.IstSpielerEingeloggt(player)) return;
-
-        Accounts sourceAccount = player.GetData<Accounts>(Accounts.Account_Key);
-        if (sourceAccount == null || string.IsNullOrEmpty(sourceAccount.CharacterData)) return;
-
-        Player target = FindPlayerByAccountId(targetAccountId);
-        if (target == null)
-        {
-            player.SendChatMessage("~r~Dieser Spieler ist nicht online.");
-            return;
-        }
-        Accounts targetAccount = target.GetData<Accounts>(Accounts.Account_Key);
-        if (targetAccount == null) return;
-
-        if (player.Position.DistanceTo(target.Position) > 5.0f)
-        {
-            player.SendChatMessage("Du bist zu weit von diesem Spieler entfernt.");
-            return;
-        }
-
-        try
-        {
-            CharacterData charData = JsonConvert.DeserializeObject<CharacterData>(sourceAccount.CharacterData);
-            if (charData == null) return;
+            CharacterData charData = JsonConvert.DeserializeObject<CharacterData>(characterDataJson);
+            if (charData == null) return null;
 
             var dataForClient = new
             {
@@ -73,26 +53,26 @@ public class IdCardCommands : Script
                 lastname = charData.Lastname,
                 birth = charData.Birth,
                 gender = charData.Gender,
-                accountId = sourceAccount.ID,
-                creationDate = sourceAccount.CreationDate.ToString("dd.MM.yyyy")
+                accountId = accountId,
+                creationDate = creationDate.ToString("dd.MM.yyyy")
             };
-
-            // Sende die Daten direkt an den Client des Ziels.
-            target.TriggerEvent("showPlayerIdCard", JsonConvert.SerializeObject(dataForClient));
+            return JsonConvert.SerializeObject(dataForClient);
         }
-        catch (JsonException) { /* Fehler ignorieren */ }
-
-        player.SendChatMessage($"Du zeigst {targetAccount.GetFullName()} deinen Ausweis.");
-        target.SendChatMessage($"{sourceAccount.GetFullName()} zeigt dir seinen Ausweis.");
+        catch (JsonException) { return null; }
     }
 
-    // Die alten [RemoteEvent]-Handler ("OnRequestSelfIdCard" etc.) wurden durch die Commands ersetzt.
-
-    private Player FindPlayerByAccountId(int accountId)
+    // Gibt die Ausweis-Daten für das Zeigen an einen anderen zurück
+    public string GetIdCardJsonForOther(string characterDataJson, int accountId, DateTime creationDate)
     {
-        return NAPI.Pools.GetAllPlayers().FirstOrDefault(p =>
-            Accounts.IstSpielerEingeloggt(p) &&
-            p.GetData<Accounts>(Accounts.Account_Key).ID == accountId
-        );
+        // Logik identisch, aber für andere Spieler verwendbar
+        return GetSelfIdCardJson(characterDataJson, accountId, creationDate);
     }
+
+    // NEU: Direkter Befehl, um den Ausweis anderen zu zeigen.
+    // Die Logik zum Zeigen des Ausweises an andere Spieler bleibt als Datenfunktion erhalten.
+
+    // Keine GTA-spezifischen Events oder Commands mehr enthalten.
+    // Ein plattformabhängiger Handler ruft diese Methoden auf und übernimmt die Weiterleitung.
+
+    // Keine Player-Logik mehr enthalten.
 }

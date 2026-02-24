@@ -12,7 +12,7 @@ ragemp-roleplay-project/
 │   │   ├── Database/
 │   │   │   └── DatabaseManager.cs
 │   │   ├── Player/
-│   │   │   ├── PlayerData.cs
+│   │   │   ├── Account.cs
 │   │   │   └── PlayerManager.cs
 │   │   ├── Commands/
 │   │   │   └── Commands.cs
@@ -139,18 +139,18 @@ fivem-roleplay-project/
 
 ## 📊 Direkter Vergleich
 
-| Feature | RAGE:MP | FiveM |
-|---------|---------|-------|
-| **Server-Sprache** | C# | Lua (oder JS/TS) |
-| **Client-Sprache** | JavaScript | Lua (oder JS) |
-| **UI System** | CEF (Chromium) | NUI (Chromium) |
-| **Ressourcen-System** | Packages | Resources mit fxmanifest.lua |
-| **Performance** | ⭐⭐⭐⭐ Sehr gut | ⭐⭐⭐⭐⭐ Hervorragend |
-| **Community** | ⭐⭐⭐ Kleiner | ⭐⭐⭐⭐⭐ Sehr groß |
-| **Verfügbare Scripts** | ⭐⭐⭐ Weniger | ⭐⭐⭐⭐⭐ Sehr viele |
-| **Lernkurve** | Mittel (C# Kenntnisse) | Leicht (Lua einfach) |
-| **RP-Geeignet** | ⭐⭐⭐⭐⭐ Ja | ⭐⭐⭐⭐⭐ Ja |
-| **Stabilität** | ⭐⭐⭐⭐ Gut | ⭐⭐⭐⭐⭐ Sehr gut |
+| Feature                | RAGE:MP                | FiveM                        |
+| ---------------------- | ---------------------- | ---------------------------- |
+| **Server-Sprache**     | C#                     | Lua (oder JS/TS)             |
+| **Client-Sprache**     | JavaScript             | Lua (oder JS)                |
+| **UI System**          | CEF (Chromium)         | NUI (Chromium)               |
+| **Ressourcen-System**  | Packages               | Resources mit fxmanifest.lua |
+| **Performance**        | ⭐⭐⭐⭐ Sehr gut          | ⭐⭐⭐⭐⭐ Hervorragend           |
+| **Community**          | ⭐⭐⭐ Kleiner            | ⭐⭐⭐⭐⭐ Sehr groß              |
+| **Verfügbare Scripts** | ⭐⭐⭐ Weniger            | ⭐⭐⭐⭐⭐ Sehr viele             |
+| **Lernkurve**          | Mittel (C# Kenntnisse) | Leicht (Lua einfach)         |
+| **RP-Geeignet**        | ⭐⭐⭐⭐⭐ Ja               | ⭐⭐⭐⭐⭐ Ja                     |
+| **Stabilität**         | ⭐⭐⭐⭐ Gut               | ⭐⭐⭐⭐⭐ Sehr gut               |
 
 ---
 

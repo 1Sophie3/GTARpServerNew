@@ -16,7 +16,7 @@ mp.events.add('client:showLoginUI', () => {
 });
 
 // Event: Login erfolgreich
-mp.events.add('client:loginSuccess', (playerData) => {
+mp.events.add('client:loginSuccess', (accountData) => {
     if (loginBrowser) {
         loginBrowser.destroy();
         loginBrowser = null;
@@ -26,11 +26,11 @@ mp.events.add('client:loginSuccess', (playerData) => {
     mp.gui.chat.show(true);
 
     // JSON-String parsen falls nötig
-    let pd = playerData;
-    try { pd = (typeof playerData === 'string') ? JSON.parse(playerData) : playerData; } catch (e) { }
+    let acc = accountData;
+    try { acc = (typeof accountData === 'string') ? JSON.parse(accountData) : accountData; } catch (e) { }
 
     // HUD laden
-    loadHUD(pd);
+    loadHUD(acc);
 
     console.log('[CLIENT] Login erfolgreich');
 });
@@ -49,13 +49,13 @@ mp.events.add('client:loginResult', (success, message) => {
 });
 
 // HUD laden
-function loadHUD(playerData) {
+function loadHUD(accountData) {
     if (hudBrowser) return;
 
     hudBrowser = mp.browsers.new('package://rp-ui/hud.html');
 
-    // Spielerdaten an HUD senden
-    hudBrowser.execute(`updatePlayerData(${JSON.stringify(playerData)})`);
+    // Accountdaten an HUD senden
+    hudBrowser.execute(`updatePlayerData(${JSON.stringify(accountData)})`);
 
     console.log('[CLIENT] HUD geladen');
 }

@@ -84,9 +84,9 @@ function serverLogin(username, password) {
         global.mp.events._callClient('client:loginResult', false, 'Falscher Benutzername oder Passwort.');
         return;
     }
-    // Sende login success mit playerData JSON (ohne Vor-/Nachname)
-    const playerData = { id: 1, username: acc.username, cash: 500, bank: 5000 };
-    global.mp.events._callClient('client:loginSuccess', JSON.stringify(playerData));
+    // Sende login success mit Account-Daten (ohne Vor-/Nachname)
+    const accountData = { id: 1, username: acc.username, cash: 500, bank: 5000 };
+    global.mp.events._callClient('client:loginSuccess', JSON.stringify(accountData));
 }
 
 // Simuliere server:inventoryOpen

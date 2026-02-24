@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GTANetworkAPI;
-using RPCore.Models.Character;
+using RPCore.Models.Account;
 using RPCore.Database;
 using MySql.Data.MySqlClient;
 
@@ -28,16 +28,12 @@ namespace RPCore.Managers
         private static CharacterManager? _instance;
         public static CharacterManager Instance => _instance ??= new CharacterManager();
 
-        // Player -> Character Mapping
-        private Dictionary<GTANetworkAPI.Player, Character> _playerCharacters;
-
-        // Cache für geladene Characters
-        private Dictionary<int, Character> _loadedCharacters;
+        // Player -> Account Mapping
+        private Dictionary<GTANetworkAPI.Player, Account> _playerAccounts;
 
         private CharacterManager()
         {
-            _playerCharacters = new Dictionary<GTANetworkAPI.Player, Character>();
-            _loadedCharacters = new Dictionary<int, Character>();
+            _playerAccounts = new Dictionary<GTANetworkAPI.Player, Account>();
         }
 
         /// <summary>
@@ -242,123 +238,123 @@ namespace RPCore.Managers
         /// <summary>
         /// Setzt den Character für einen Spieler
         /// </summary>
-        public void SetPlayerCharacter(GTANetworkAPI.Player player, Character character)
+        public void SetPlayerAccount(GTANetworkAPI.Player player, Account account)
         {
-            _playerCharacters[player] = character;
-            player.Name = character.FullName;
-            player.Position = character.LastPosition;
-            player.Rotation = character.LastRotation;
-            player.Health = character.Health;
-            player.Armor = character.Armor;
+            _playerAccounts[player] = account;
+            player.Name = account.FullName;
+            player.Position = account.LastPosition;
+            player.Rotation = new Vector3(0, 0, account.LastRotation);
+            player.Health = account.Health;
+            player.Armor = account.Armor;
 
-            NAPI.Util.ConsoleOutput($"[CharacterManager] Character {character.FullName} für Spieler gesetzt");
+            NAPI.Util.ConsoleOutput($"[CharacterManager] Account/Charakter {account.FullName} für Spieler gesetzt");
         }
 
         /// <summary>
         /// Holt den Character eines Spielers
         /// </summary>
-        public Character? GetPlayerCharacter(GTANetworkAPI.Player player)
+        public Account? GetPlayerAccount(GTANetworkAPI.Player player)
         {
-            return _playerCharacters.ContainsKey(player) ? _playerCharacters[player] : null;
+            return _playerAccounts.ContainsKey(player) ? _playerAccounts[player] : null;
         }
 
         /// <summary>
         /// Entfernt Character-Zuordnung beim Disconnect
         /// </summary>
-        public async Task RemovePlayerCharacter(GTANetworkAPI.Player player)
+        public async Task RemovePlayerAccount(GTANetworkAPI.Player player)
         {
-            if (_playerCharacters.ContainsKey(player))
+            if (_playerAccounts.ContainsKey(player))
             {
-                var character = _playerCharacters[player];
+                var account = _playerAccounts[player];
 
-                // Speichere Character vor dem Entfernen
-                character.LastPosition = player.Position;
-                character.LastRotation = player.Rotation;
-                character.Health = player.Health;
-                character.Armor = player.Armor;
-                await SaveCharacter(character);
+                // Speichere Account vor dem Entfernen
+                account.LastPosition = player.Position;
+                account.LastRotation = player.Rotation.Z;
+                account.Health = player.Health;
+                account.Armor = player.Armor;
+                await AccountManager.Instance.SaveAccount(account);
 
-                _playerCharacters.Remove(player);
+                _playerAccounts.Remove(player);
             }
         }
 
         /// <summary>
         /// Gibt Geld an einen Character
         /// </summary>
-        public async Task<bool> GiveMoney(Character character, int amount)
+        public async Task<bool> GiveMoney(Account account, int amount)
         {
             if (amount <= 0) return false;
 
-            character.Cash += amount;
-            await SaveCharacter(character);
+            account.Cash += amount;
+            await AccountManager.Instance.SaveAccount(account);
             return true;
         }
 
         /// <summary>
         /// Nimmt Geld von einem Character
         /// </summary>
-        public async Task<bool> TakeMoney(Character character, int amount)
+        public async Task<bool> TakeMoney(Account account, int amount)
         {
-            if (amount <= 0 || character.Cash < amount) return false;
+            if (amount <= 0 || account.Cash < amount) return false;
 
-            character.Cash -= amount;
-            await SaveCharacter(character);
+            account.Cash -= amount;
+            await AccountManager.Instance.SaveAccount(account);
             return true;
         }
 
         /// <summary>
         /// Gibt Bank-Geld an einen Character
         /// </summary>
-        public async Task<bool> GiveBankMoney(Character character, int amount)
+        public async Task<bool> GiveBankMoney(Account account, int amount)
         {
             if (amount <= 0) return false;
 
-            character.BankBalance += amount;
-            await SaveCharacter(character);
+            account.BankMoney += amount;
+            await AccountManager.Instance.SaveAccount(account);
             return true;
         }
 
         /// <summary>
         /// Nimmt Bank-Geld von einem Character
         /// </summary>
-        public async Task<bool> TakeBankMoney(Character character, int amount)
+        public async Task<bool> TakeBankMoney(Account account, int amount)
         {
-            if (amount <= 0 || character.BankBalance < amount) return false;
+            if (amount <= 0 || account.BankMoney < amount) return false;
 
-            character.BankBalance -= amount;
-            await SaveCharacter(character);
+            account.BankMoney -= amount;
+            await AccountManager.Instance.SaveAccount(account);
             return true;
         }
 
         /// <summary>
         /// Gibt Experience und prüft Level-Up
         /// </summary>
-        public async Task<bool> GiveExperience(Character character, int amount)
+        public async Task<bool> GiveExperience(Account account, int amount)
         {
             if (amount <= 0) return false;
 
-            character.Experience += amount;
+            account.Experience += amount;
 
             // Level-Up Check (1000 EXP pro Level)
-            int requiredExp = character.Level * 1000;
-            if (character.Experience >= requiredExp)
+            int requiredExp = account.Level * 1000;
+            if (account.Experience >= requiredExp)
             {
-                character.Level++;
-                character.Experience -= requiredExp;
-                NAPI.Util.ConsoleOutput($"[CharacterManager] {character.FullName} ist jetzt Level {character.Level}!");
+                account.Level++;
+                account.Experience -= requiredExp;
+                NAPI.Util.ConsoleOutput($"[CharacterManager] {account.FullName} ist jetzt Level {account.Level}!");
             }
 
-            await SaveCharacter(character);
+            await AccountManager.Instance.SaveAccount(account);
             return true;
         }
 
         /// <summary>
         /// Aktualisiert Spielzeit
         /// </summary>
-        public async Task UpdatePlayTime(Character character, int minutes)
+        public async Task UpdatePlayTime(Account account, int minutes)
         {
-            character.PlaytimeMinutes += minutes;
-            await SaveCharacter(character);
+            account.PlayTimeMinutes += minutes;
+            await AccountManager.Instance.SaveAccount(account);
         }
     }
 }

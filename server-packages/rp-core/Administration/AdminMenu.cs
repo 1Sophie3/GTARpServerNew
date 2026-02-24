@@ -1,4 +1,4 @@
-﻿using GTANetworkAPI;
+﻿// using GTANetworkAPI; // Entfernt für Plattformunabhängigkeit
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,9 +23,11 @@ namespace RPCore.Admin
         public Dictionary<int, int[]> Female { get; set; } = new Dictionary<int, int[]>();
     }
 
-    class AdminSystem : Script
+    // Plattformunabhängige AdminSystem-Klasse
+    class AdminSystem
     {
-        private static readonly Dictionary<Player, Vector3> adminGoBackPosition = new Dictionary<Player, Vector3>();
+        // Spielerobjekt sollte ein generisches Interface (z.B. IPlayer) sein
+        private static readonly Dictionary<IPlayer, Vector3> adminGoBackPosition = new Dictionary<IPlayer, Vector3>();
         private static readonly Dictionary<string, AdminOutfit> AdminOutfits = new Dictionary<string, AdminOutfit>();
         private static List<TeleportLocation> teleportLocations = new List<TeleportLocation>();
 
@@ -41,7 +43,8 @@ namespace RPCore.Admin
             AdminOutfits["mod"] = new AdminOutfit { Male = new Dictionary<int, int[]> { { 1, new[] { 135, 2 } }, { 11, new[] { 287, 2 } }, { 8, new[] { 15, 0 } }, { 4, new[] { 114, 2 } }, { 6, new[] { 78, 2 } }, { 3, new[] { 3, 0 } } }, Female = new Dictionary<int, int[]> { { 1, new[] { 153, 2 } }, { 11, new[] { 300, 2 } }, { 8, new[] { 15, 0 } }, { 4, new[] { 121, 2 } }, { 6, new[] { 82, 2 } }, { 3, new[] { 8, 0 } } } };
             AdminOutfits["admin"] = new AdminOutfit { Male = new Dictionary<int, int[]> { { 1, new[] { 135, 3 } }, { 11, new[] { 287, 3 } }, { 8, new[] { 15, 0 } }, { 4, new[] { 114, 3 } }, { 6, new[] { 78, 3 } }, { 3, new[] { 3, 0 } } }, Female = new Dictionary<int, int[]> { { 1, new[] { 153, 3 } }, { 11, new[] { 300, 3 } }, { 8, new[] { 15, 0 } }, { 4, new[] { 121, 3 } }, { 6, new[] { 82, 3 } }, { 3, new[] { 8, 0 } } } };
             AdminOutfits["superadmin"] = new AdminOutfit { Male = new Dictionary<int, int[]> { { 1, new[] { 135, 2 } }, { 11, new[] { 287, 2 } }, { 8, new[] { 15, 0 } }, { 4, new[] { 114, 2 } }, { 6, new[] { 78, 2 } }, { 3, new[] { 3, 0 } } }, Female = new Dictionary<int, int[]> { { 1, new[] { 153, 2 } }, { 11, new[] { 300, 2 } }, { 8, new[] { 15, 0 } }, { 4, new[] { 121, 2 } }, { 6, new[] { 82, 2 } }, { 3, new[] { 8, 0 } } } };
-            NAPI.Util.ConsoleOutput($"[AdminSystem] {AdminOutfits.Count} Admin-Outfits geladen.");
+            // Log-Ausgabe plattformunabhängig gestalten
+            Console.WriteLine($"[AdminSystem] {AdminOutfits.Count} Admin-Outfits geladen.");
         }
 
         private void LoadTeleportLocations()
@@ -53,26 +56,31 @@ namespace RPCore.Admin
                 {
                     string json = File.ReadAllText(filePath);
                     teleportLocations = JsonConvert.DeserializeObject<List<TeleportLocation>>(json);
-                    NAPI.Util.ConsoleOutput($"[AdminSystem] {teleportLocations.Count} Teleport-Orte erfolgreich geladen.");
+                    Console.WriteLine($"[AdminSystem] {teleportLocations.Count} Teleport-Orte erfolgreich geladen.");
                 }
                 else
                 {
-                    NAPI.Util.ConsoleOutput($"[AdminSystem-FEHLER] Die Datei teleportLocations.json wurde unter dem Pfad '{filePath}' NICHT gefunden.");
+                    Console.WriteLine($"[AdminSystem-FEHLER] Die Datei teleportLocations.json wurde unter dem Pfad '{filePath}' NICHT gefunden.");
                 }
             }
             catch (Exception ex)
             {
-                NAPI.Util.ConsoleOutput($"[FEHLER] Fehler beim Laden von teleportLocations.json: {ex.Message}");
+                Console.WriteLine($"[FEHLER] Fehler beim Laden von teleportLocations.json: {ex.Message}");
             }
         }
 
-        [RemoteEvent("adminPanel:requestOpen")]
-        public void EVENT_RequestAdminPanelData(Player admin)
+        // Plattformunabhängiges Beispiel: AdminPanel-Daten abrufen
+        // Die Methode erhält ein IPlayer-Objekt (repräsentiert den Admin)
+        // und gibt ein AdminPanelDataResult-Objekt zurück
+        public AdminPanelDataResult GetAdminPanelData(IPlayer admin)
         {
+            // Accounts-Objekt muss über eine plattformunabhängige Methode aus dem Spieler geladen werden
             Accounts adminAccount = admin.GetData<Accounts>(Accounts.Account_Key);
-            if (adminAccount == null || !adminAccount.IstSpielerAdmin((int)Accounts.AdminRanks.TestGamemaster)) return;
+            if (adminAccount == null || !adminAccount.IstSpielerAdmin((int)Accounts.AdminRanks.TestGamemaster))
+                return null;
 
-            var playerList = NAPI.Pools.GetAllPlayers()
+            // Alle Spieler abrufen (z.B. aus einer Spielerliste)
+            var playerList = PlayerManager.GetAllPlayers()
                 .Where(p => p.HasData(Accounts.Account_Key))
                 .Select(p => new { acc = p.GetData<Accounts>(Accounts.Account_Key), player = p })
                 .OrderByDescending(p => p.acc.Adminlevel)
@@ -86,16 +94,65 @@ namespace RPCore.Admin
                 houseList = HouseManager.AllHouses.Select(h => new { id = h.Id, name = h.Name, owner = h.OwnerName ?? "STAAT" }).ToList();
             }
             var tpLocations = teleportLocations.Select(loc => loc.Name).ToList();
-
             var supportTickets = Datenbank.Datenbank.GetOpenSupportTickets();
 
-            admin.TriggerEvent("adminPanel:show",
-                adminAccount.Adminlevel,
-                adminAccount.ID,
-                JsonConvert.SerializeObject(playerList),
-                JsonConvert.SerializeObject(houseList),
-                JsonConvert.SerializeObject(tpLocations),
-                JsonConvert.SerializeObject(supportTickets));
+            // Rückgabe als Objekt (kann z.B. als JSON serialisiert werden)
+            return new AdminPanelDataResult
+            {
+                Adminlevel = adminAccount.Adminlevel,
+                AdminId = adminAccount.ID,
+                PlayerList = playerList,
+                HouseList = houseList,
+                TeleportLocations = tpLocations,
+                SupportTickets = supportTickets
+            };
+        }
+
+        // Beispiel für die Übergabe von Spielerdaten:
+        // - Methoden erhalten ein IPlayer-Objekt (repräsentiert einen Spieler)
+        // - Rückgaben erfolgen als Ergebnisobjekte oder bool/Status
+        // - Kommunikation mit Client/Frontend erfolgt über Events, Callbacks oder API-Response
+
+        // Beispiel-Interface für einen Spieler (muss für jede Plattform implementiert werden):
+        // public interface IPlayer
+        // {
+        //     T GetData<T>(string key);
+        //     void SetData<T>(string key, T value);
+        //     string Name { get; }
+        //     ... weitere Eigenschaften und Methoden ...
+        // }
+
+        // Beispiel für Rückgabe:
+        // var result = adminSystem.GetAdminPanelData(player);
+        // -> result enthält alle nötigen Daten für das AdminPanel
+        // Ergebnisobjekt für AdminPanel-Daten
+        public class AdminPanelDataResult
+        {
+            public int Adminlevel { get; set; }
+            public int AdminId { get; set; }
+            public object PlayerList { get; set; }
+            public object HouseList { get; set; }
+            public object TeleportLocations { get; set; }
+            public object SupportTickets { get; set; }
+        }
+
+        // Beispiel-Interface für einen Spieler (muss für jede Plattform implementiert werden)
+        public interface IPlayer
+        {
+            T GetData<T>(string key);
+            void SetData<T>(string key, T value);
+            string Name { get; }
+            // ... weitere Eigenschaften und Methoden ...
+        }
+
+        // Beispiel für eine plattformunabhängige Spielerverwaltung
+        public static class PlayerManager
+        {
+            public static IEnumerable<IPlayer> GetAllPlayers()
+            {
+                // Hier muss die plattformspezifische Implementierung erfolgen
+                throw new NotImplementedException();
+            }
         }
 
         #region Aduty & Invisibility
@@ -172,7 +229,7 @@ namespace RPCore.Admin
             Player target = FindPlayerByAccountId(targetAccountId);
             if (target == null) { admin.SendNotification("~r~Spieler nicht online."); return; }
             string characterName = GetFullNameFromTarget(target);
-            NAPI.Chat.SendChatMessageToAll($"~p~[SERVER]~w~ {characterName} wurde von einem Admin gekickt. Grund: {reason}");
+            //NAPI.Chat.SendChatMessageToAll($"~p~[SERVER]~w~ {characterName} wurde von einem Admin gekickt. Grund: {reason}");
             target.Kick(reason);
         }
 
@@ -193,8 +250,8 @@ namespace RPCore.Admin
             string characterName = targetAccount.GetFullName();
             Datenbank.Datenbank.SpielerBannen(targetAccountId, reason);
 
-            
-          
+
+
 
             // NEU: Schleife, die nur Admins eine Benachrichtigung sendet
             string adminMessage = $"~r~{characterName} wurde von {admin.Name} gebannt. Grund: {reason}";
@@ -591,7 +648,7 @@ namespace RPCore.Admin
 
             // Speichere die Änderungen
             VehSafeData.UpdateVehicle(vehData);
-         
+
         }
 
         [RemoteEvent("adminPanel:forceToggleLock")]

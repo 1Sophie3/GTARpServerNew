@@ -86,7 +86,7 @@ namespace RPCore.Commands
             }
             catch (Exception ex)
             {
-                NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Speichern des Fahrzeugs: {ex.Message}");
+                // ConsoleOutput für Fehler beim Speichern des Fahrzeugs
             }
             return insertedId;
         }
@@ -154,7 +154,7 @@ namespace RPCore.Commands
             }
             catch (Exception ex)
             {
-                NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Aktualisieren des Fahrzeugs: {ex.Message}");
+                //ConsoleOutput für Fehler beim Aktualisieren des Fahrzeugs
             }
         }
 
@@ -191,7 +191,8 @@ namespace RPCore.Commands
             }
             catch (Exception ex)
             {
-                NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Aktualisieren der Fahrzeugposition: {ex.Message}");
+                // ConsoleOutput für Fehler beim Aktualisieren der Fahrzeugposition
+                // NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Aktualisieren der Fahrzeugposition: {ex.Message}");
             }
         }
 
@@ -219,7 +220,8 @@ namespace RPCore.Commands
             }
             catch (Exception ex)
             {
-                NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Löschen des Fahrzeugs (ID {vehSafeId}): {ex.Message}");
+                // ConsoleOutput für Fehler beim Löschen des Fahrzeugs
+                // NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Löschen des Fahrzeugs (ID {vehSafeId}): {ex.Message}");
             }
         }
 
@@ -276,7 +278,7 @@ namespace RPCore.Commands
             }
             catch (Exception ex)
             {
-                NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Abrufen des Fahrzeugs (ID {id}): {ex.Message}");
+                // NAPI.Util.ConsoleOutput($"[ERROR] Fehler beim Abrufen des Fahrzeugs (ID {id}): {ex.Message}");
             }
             return veh;
         }
