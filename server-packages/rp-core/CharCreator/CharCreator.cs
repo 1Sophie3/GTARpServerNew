@@ -1,218 +1,125 @@
-﻿using RPCore.Database;
-using RPCore.Notifications;
-using GTANetworkAPI;
+﻿
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RPCore.CharCreator
 {
-    class CharCreatorEvents : Script
+    // Handler: Nimmt Events entgegen und ruft Controller auf (plattformunabhängig)
+    // Die Kommunikation mit dem Frontend (z.B. Vue/CEF) erfolgt über Adapter/Service, siehe unten.
+    class CharCreatorHandler
     {
+        private readonly CharCreatorController _controller = new CharCreatorController();
 
-        [RemoteEvent("SetPlayerGender")]
-        public void OnSetPlayerGender(Player player, string gender)
+        // Diese Methoden werden von der jeweiligen Plattform aufgerufen (z.B. Event, API-Call)
+        public void HandleSetPlayerGender(object player, string gender)
         {
-            if (gender.ToLower() == "männlich")
-            {
-                NAPI.Player.SetPlayerSkin(player, PedHash.FreemodeMale01);
-            }
-            else
-            {
-                NAPI.Player.SetPlayerSkin(player, PedHash.FreemodeFemale01);
-            }
+            _controller.SetPlayerGender(player, gender);
         }
 
-        [RemoteEvent("CharacterCreated")]
-        public static void OnCharacterCreated(Player player, string character, bool created)
+        public void HandleCharacterCreated(object player, string character, bool created)
         {
-            Accounts account = player.GetData<Accounts>(Accounts.Account_Key);
-
-            JObject obj = JObject.Parse(character);
-
-            //Hair
-            NAPI.Player.SetPlayerClothes(player, 2, (int)obj["hair"][0], 0);
-            NAPI.Player.SetPlayerHairColor(player, (byte)obj["hair"][1], (byte)obj["hair"][1]);
-
-            //Eyecolor
-            NAPI.Player.SetPlayerEyeColor(player, (byte)obj["eyeColor"][0]);
-
-            //Facefeatures
-            for (int i = 0; i < 19; i++)
-            {
-                int featureValue;
-                if (int.TryParse(obj["faceFeatures"][i].ToString(), out featureValue))
-                {
-                    NAPI.Player.SetPlayerFaceFeature(player, i, featureValue);
-                }
-
-            }
-
-            //Headblend
-            HeadBlend headblend = new HeadBlend();
-            headblend.ShapeFirst = (byte)obj["blendData"][0];
-            headblend.ShapeSecond = (byte)obj["blendData"][1];
-            headblend.ShapeThird = 0;
-            headblend.SkinFirst = (byte)obj["blendData"][2];
-            headblend.SkinSecond = (byte)obj["blendData"][3];
-            headblend.SkinThird = 0;
-            headblend.ShapeMix = (byte)obj["blendData"][4];
-            headblend.SkinMix = (byte)obj["blendData"][5];
-            headblend.ThirdMix = 0;
-            NAPI.Player.SetPlayerHeadBlend(player, headblend);
-
-            //Clothing // neue validierung mit casual usw einfügen .... 
-            //NAPI.Player.SetPlayerClothes(player, 11, (int)obj["clothing"][0], 0);
-            //NAPI.Player.SetPlayerClothes(player, 3, (int)obj["clothing"][1], 0);
-            //NAPI.Player.SetPlayerClothes(player, 8, (int)obj["clothing"][2], 0);
-            //NAPI.Player.SetPlayerClothes(player, 6, (int)obj["clothing"][3], 0);
-
-            //Headoverlay
-            for (int i = 0; i < 12; i++)
-            {
-                HeadOverlay headOverlay = new HeadOverlay();
-                int headOverlayCheck = (int)obj["headOverlays"][i];
-                if (headOverlayCheck == -1)
-                {
-                    headOverlayCheck = 255;
-                }
-                if (i != 1)
-                {
-                    headOverlay.Index = (byte)headOverlayCheck;
-                    headOverlay.Opacity = 1.0f;
-                    headOverlay.Color = (byte)obj["headOverlaysColors"][i];
-                    headOverlay.SecondaryColor = (byte)obj["headOverlaysColors"][i];
-                }
-                else
-                {
-                    headOverlayCheck = (int)obj["beard"][0];
-                    headOverlay.Index = (byte)headOverlayCheck;
-                    headOverlay.Opacity = 1.0f;
-                    headOverlay.Color = (byte)obj["beard"][1];
-                    headOverlay.SecondaryColor = (byte)obj["headOverlaysColors"][2];
-                }
-                NAPI.Player.SetPlayerHeadOverlay(player, i, headOverlay);
-            }
-            account.CharacterData = character;
-            player.Name = $"{obj["firstname"]}_{obj["lastname"]}";
-            Datenbank.Datenbank.AccountSpeichern(player);
-
-            if (created == true)
-            {
-                //player.TriggerEvent("showHideMoneyHud");
-                player.TriggerEvent("charcreator-hide");
-                //NAPI.ClientEvent.TriggerClientEvent(player, "PlayerFreeze", false);
-                Utils.sendNotification(player, "Charakter erfolgreich erstellt, warte auf Einreise ...", "fas fa-user");
-                //player.TriggerEvent("showHideMoneyHud");
-            }
+            _controller.CharacterCreated(player, character, created);
         }
 
-        /// <summary>
-        /// Liest den JSON-String (characterData) aus der DB aus und wendet ihn auf den Spieler an.
-        /// Passen die Signatur und Parameter je nach deinem API-Setup an.
-        /// </summary>
-        public static void ApplyCustomization(Player player, string characterData)
+        // Methode: Wird vom Frontend (z.B. Vue) aufgerufen, um finale Charakterdaten zu übergeben
+        public void ReceiveCharacterDataFromFrontend(object player, string characterJson)
         {
-            try
-            {
-                JObject data = JObject.Parse(characterData);
-
-
-
-                // 1. Gender: Wir gehen davon aus, dass "männlich" true und "weiblich" false ist.
-                bool isMale = data["gender"].ToString().ToLower() == "männlich";
-
-                // --- WICHTIG: MODELL SETZEN VOR DER ANPASSUNG ---
-                if (isMale)
-                {
-                    player.SetSkin(PedHash.FreemodeMale01); // Setze männliches Modell
-                }
-                else
-                {
-                    player.SetSkin(PedHash.FreemodeFemale01); // Setze weibliches Modell
-                }
-                // --- ENDE DES WICHTIGEN TEILS ---
-
-
-
-                // 2. HeadBlend: Erwartet wird ein Array mit 6 Werten (blendData: [0,0,0,0,0,0])
-                Accounts account = player.GetData<Accounts>(Accounts.Account_Key);
-
-                JObject obj = JObject.Parse(characterData);
-
-                //Hair
-                NAPI.Player.SetPlayerClothes(player, 2, (int)obj["hair"][0], 0);
-                NAPI.Player.SetPlayerHairColor(player, (byte)obj["hair"][1], (byte)obj["hair"][1]);
-
-                //Eyecolor
-                NAPI.Player.SetPlayerEyeColor(player, (byte)obj["eyeColor"][0]);
-
-                //Facefeatures
-                for (int i = 0; i < 19; i++)
-                {
-                    int featureValue;
-                    if (int.TryParse(obj["faceFeatures"][i].ToString(), out featureValue))
-                    {
-                        NAPI.Player.SetPlayerFaceFeature(player, i, featureValue);
-                    }
-
-                }
-
-                //Headblend
-                HeadBlend headblend = new HeadBlend();
-                headblend.ShapeFirst = (byte)obj["blendData"][0];
-                headblend.ShapeSecond = (byte)obj["blendData"][1];
-                headblend.ShapeThird = 0;
-                headblend.SkinFirst = (byte)obj["blendData"][2];
-                headblend.SkinSecond = (byte)obj["blendData"][3];
-                headblend.SkinThird = 0;
-                headblend.ShapeMix = (byte)obj["blendData"][4];
-                headblend.SkinMix = (byte)obj["blendData"][5];
-                headblend.ThirdMix = 0;
-                NAPI.Player.SetPlayerHeadBlend(player, headblend);
-
-                //Clothing // neue validierung mit casual usw einfügen .... 
-                //NAPI.Player.SetPlayerClothes(player, 11, (int)obj["clothing"][0], 0);
-                //NAPI.Player.SetPlayerClothes(player, 3, (int)obj["clothing"][1], 0);
-                //NAPI.Player.SetPlayerClothes(player, 8, (int)obj["clothing"][2], 0);
-                //NAPI.Player.SetPlayerClothes(player, 6, (int)obj["clothing"][3], 0);
-
-                //Headoverlay
-                for (int i = 0; i < 12; i++)
-                {
-                    HeadOverlay headOverlay = new HeadOverlay();
-                    int headOverlayCheck = (int)obj["headOverlays"][i];
-                    if (headOverlayCheck == -1)
-                    {
-                        headOverlayCheck = 255;
-                    }
-                    if (i != 1)
-                    {
-                        headOverlay.Index = (byte)headOverlayCheck;
-                        headOverlay.Opacity = 1.0f;
-                        headOverlay.Color = (byte)obj["headOverlaysColors"][i];
-                        headOverlay.SecondaryColor = (byte)obj["headOverlaysColors"][i];
-                    }
-                    else
-                    {
-                        headOverlayCheck = (int)obj["beard"][0];
-                        headOverlay.Index = (byte)headOverlayCheck;
-                        headOverlay.Opacity = 1.0f;
-                        headOverlay.Color = (byte)obj["beard"][1];
-                        headOverlay.SecondaryColor = (byte)obj["headOverlaysColors"][2];
-                    }
-                    NAPI.Player.SetPlayerHeadOverlay(player, i, headOverlay);
-                }
-                player.Name = $"{obj["firstname"]}_{obj["lastname"]}";
-                NAPI.Util.ConsoleOutput("Customization erfolgreich angewendet.");
-            }
-            catch (Exception ex)
-            {
-                NAPI.Util.ConsoleOutput("Fehler in ApplyCustomization: " + ex.Message);
-            }
+            // Hier werden die vom Frontend (Vue/CEF) übermittelten Daten an das Spiel weitergegeben
+            // z.B. Speicherung, Anwendung auf den Spieler, Validierung etc.
+            _controller.ApplyCharacterData(player, characterJson);
         }
+
+        // Methode: Lädt die aktuellen Charakterdaten aus der DB und sendet sie ans Frontend (z.B. für Frisör, Klinik)
+        public void LoadCurrentCharacterData(object player)
+        {
+            // Beispiel: Charakterdaten aus der DB laden
+            // string characterJson = CharacterService.LoadCharacterData(player);
+            // Dann an das Frontend senden:
+            // FrontendService.SendToVue(player, "charcreator-data", characterJson);
+        }
+
+        // Methode: Wird aufgerufen, wenn der Spieler Anpassungen abbricht (z.B. Frisör/Klinik)
+        public void CancelCharacterEdit(object player)
+        {
+            // Setzt das Aussehen des Spielers auf den letzten gespeicherten Stand zurück
+            // string originalCharacterJson = CharacterService.LoadCharacterData(player);
+            _controller.ApplyCharacterPreview(player, /*originalCharacterJson*/ "");
+            // FrontendService.TriggerCloseCharCreator(player);
+        }
+
+        // Methode: Wird vom Frontend aufgerufen, um eine Live-Vorschau des Charakters zu ermöglichen
+        public void UpdateCharacterPreview(object player, string previewDataJson)
+        {
+            // Diese Methode wird bei jeder Änderung im CharCreator-Frontend aufgerufen
+            // Sie sorgt dafür, dass der Charakter im Spiel live aktualisiert wird (z.B. Aussehen, Kleidung, etc.)
+            _controller.ApplyCharacterPreview(player, previewDataJson);
+        }
+
+        // Beispiel: Datenübergabe an das Vue-Frontend (Pseudo-Code)
+        // public void SendCharacterDataToFrontend(object player, string characterJson)
+        // {
+        //     // Adapter/Service für CEF/Vue/HTML aufrufen, z.B.:
+        //     // FrontendService.SendToVue(player, "charcreator-data", characterJson);
+        // }
     }
 
+    // Controller: Kapselt Logik, ruft Charakter-Modul auf (plattformunabhängig)
+    class CharCreatorController
+    {
+        private readonly CharCustomizationLogicBase _charLogic;
+
+        public CharCreatorController()
+        {
+            // Plattform-Resolver (z.B. per DI, Factory, Config)
+            _charLogic = new CharCustomizationLogic();
+        }
+
+        public void SetPlayerGender(object player, string gender)
+        {
+            _charLogic.ApplyGender(player, gender);
+        }
+
+        public void CharacterCreated(object player, string character, bool created)
+        {
+            // Die folgenden Methoden müssen plattformunabhängig implementiert werden
+            // Accounts-Handling, Name setzen, Speichern etc. erfolgt in Adapter/Service
+            _charLogic.ApplyCustomization(player, character);
+
+            // Beispiel: Übergabe der Daten an einen Service/Adapter (Pseudo-Code)
+            // CharacterService.UpdateCharacterData(player, character);
+            // CharacterService.SetPlayerName(player, ...);
+            // CharacterService.SaveAccount(player);
+
+            // Beispiel: Datenübergabe an das Vue-Frontend (Pseudo-Code)
+            // FrontendService.SendToVue(player, "charcreator-data", character);
+
+            // Event/Callback für das Frontend, z.B. Hide-Charcreator
+            if (created)
+            {
+                // FrontendService.TriggerHideCharCreator(player);
+            }
+        }
+
+        // Methode: Übernimmt finale Charakterdaten vom Frontend und verarbeitet sie
+        public void ApplyCharacterData(object player, string characterJson)
+        {
+            // Hier erfolgt die eigentliche Anwendung der Daten auf den Spieler
+            // z.B. Validierung, Speicherung, Anwendung auf das Spielobjekt
+            _charLogic.ApplyCustomization(player, characterJson);
+
+            // Hier erfolgt die Speicherung der Charakterdaten in der Datenbank
+            // Beispiel: CharacterService.SaveCharacterData(player, characterJson);
+            // Die konkrete Implementierung hängt von deinem Datenbanksystem ab
+        }
+
+        // Methode: Übernimmt Vorschau-Daten vom Frontend und aktualisiert den Charakter live
+        public void ApplyCharacterPreview(object player, string previewDataJson)
+        {
+            // Hier wird das Aussehen des Spielers temporär angepasst, ohne zu speichern
+            // z.B. für Live-Vorschau im CharCreator
+            _charLogic.ApplyCustomization(player, previewDataJson);
+            // Keine Speicherung, nur temporäre Anwendung für Vorschau
+        }
+    }
 }
 
